@@ -1,0 +1,3 @@
+<configuration xmlns="http://java.sun.com/xml/ns/jax-rpc/ri/config">
+<wsld location  = "src/main/java/wsdl/Service.wsdl" packageName= "com.company.service.generated"/>
+</configuration>

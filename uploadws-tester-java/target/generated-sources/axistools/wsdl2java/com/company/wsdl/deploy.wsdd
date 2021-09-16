@@ -1,0 +1,168 @@
+<!-- Use this file to deploy some handlers/chains and services      -->
+<!-- Two ways to do this:                                           -->
+<!--   java org.apache.axis.client.AdminClient deploy.wsdd          -->
+<!--      after the axis server is running                          -->
+<!-- or                                                             -->
+<!--   java org.apache.axis.utils.Admin client|server deploy.wsdd   -->
+<!--      from the same directory that the Axis engine runs         -->
+
+<deployment
+    xmlns="http://xml.apache.org/axis/wsdd/"
+    xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+  <!-- Services from Service WSDL service -->
+
+  <service name="BasicHttpBinding_IService" provider="java:RPC" style="rpc" use="encoded">
+      <parameter name="wsdlTargetNamespace" value="http://tempuri.org/"/>
+      <parameter name="wsdlServiceElement" value="Service"/>
+      <parameter name="schemaQualified" value="http://tempuri.org/encoded"/>
+      <parameter name="schemaUnqualified" value="http://tempuri.org/Imports"/>
+      <parameter name="wsdlServicePort" value="BasicHttpBinding_IService"/>
+      <parameter name="className" value="com.company.wsdl.BasicHttpBinding_IServiceImpl"/>
+      <parameter name="wsdlPortType" value="IService"/>
+      <parameter name="typeMappingVersion" value="1.1"/>
+      <operation name="login" qname="operNS:Login" xmlns:operNS="http://tempuri.org/" returnQName="LoginResult" returnType="rtns:loginresponse" xmlns:rtns="http://tempuri.org/encoded" soapAction="http://tempuri.org/IService/Login" >
+        <parameter qname="username" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="password" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="logout" qname="operNS:Logout" xmlns:operNS="http://tempuri.org/" returnQName="LogoutResult" returnType="rtns:logoutresponse" xmlns:rtns="http://tempuri.org/encoded" soapAction="http://tempuri.org/IService/Logout" >
+        <parameter qname="apikey" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="getFileTypes" qname="operNS:GetFileTypes" xmlns:operNS="http://tempuri.org/" returnQName="GetFileTypesResult" returnType="rtns:getfiletypesresponse" xmlns:rtns="http://tempuri.org/encoded" soapAction="http://tempuri.org/IService/GetFileTypes" >
+        <parameter qname="apikey" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="getProductFiles" qname="operNS:GetProductFiles" xmlns:operNS="http://tempuri.org/" returnQName="GetProductFilesResult" returnType="rtns:getproductfilesresponse" xmlns:rtns="http://tempuri.org/encoded" soapAction="http://tempuri.org/IService/GetProductFiles" >
+        <parameter qname="apikey" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="uploadFileChunk" qname="operNS:UploadFileChunk" xmlns:operNS="http://tempuri.org/" returnQName="UploadFileChunkResult" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="http://tempuri.org/IService/UploadFileChunk" >
+        <parameter qname="apikey" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="filename" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="buffer" type="tns:base64Binary" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="Offset" type="tns:long" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="saveUpload" qname="operNS:SaveUpload" xmlns:operNS="http://tempuri.org/" returnQName="SaveUploadResult" returnType="rtns:saveuploadresponse" xmlns:rtns="http://tempuri.org/encoded" soapAction="http://tempuri.org/IService/SaveUpload" >
+        <parameter qname="params" type="tns:saveuploadrequest" xmlns:tns="http://tempuri.org/encoded"/>
+      </operation>
+      <operation name="getFileImportStatus" qname="operNS:GetFileImportStatus" xmlns:operNS="http://tempuri.org/" returnQName="GetFileImportStatusResult" returnType="rtns:filestatusresponse" xmlns:rtns="http://tempuri.org/encoded" soapAction="http://tempuri.org/IService/GetFileImportStatus" >
+        <parameter qname="params" type="tns:filestatusrequest" xmlns:tns="http://tempuri.org/encoded"/>
+      </operation>
+      <parameter name="allowedMethods" value="getFileImportStatus logout uploadFileChunk getFileTypes getProductFiles saveUpload login"/>
+
+      <arrayMapping
+        xmlns:ns="http://tempuri.org/encoded"
+        qname="ns:ArrayOfGetproductfilesresponseProductlineProductfile"
+        type="java:com.company.wsdl.GetproductfilesresponseProductlineProductfile[]"
+        innerType="cmp-ns:getproductfilesresponseProductlineProductfile" xmlns:cmp-ns="http://tempuri.org/encoded"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://tempuri.org/encoded"
+        qname="ns:getproductfilesresponseProductline"
+        type="java:com.company.wsdl.GetproductfilesresponseProductline"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://tempuri.org/encoded"
+        qname="ns:loginresponse"
+        type="java:com.company.wsdl.Loginresponse"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://tempuri.org/encoded"
+        qname="ns:logoutresponse"
+        type="java:com.company.wsdl.Logoutresponse"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://tempuri.org/encoded"
+        qname="ns:saveuploadrequest"
+        type="java:com.company.wsdl.Saveuploadrequest"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <arrayMapping
+        xmlns:ns="http://tempuri.org/encoded"
+        qname="ns:ArrayOfFilestatusresponseImportmessage"
+        type="java:com.company.wsdl.FilestatusresponseImportmessage[]"
+        innerType="cmp-ns:filestatusresponseImportmessage" xmlns:cmp-ns="http://tempuri.org/encoded"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://tempuri.org/encoded"
+        qname="ns:filestatusresponseImportmessage"
+        type="java:com.company.wsdl.FilestatusresponseImportmessage"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://tempuri.org/encoded"
+        qname="ns:getfiletypesresponse"
+        type="java:com.company.wsdl.Getfiletypesresponse"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://tempuri.org/encoded"
+        qname="ns:saveuploadresponse"
+        type="java:com.company.wsdl.Saveuploadresponse"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://tempuri.org/encoded"
+        qname="ns:filestatusrequest"
+        type="java:com.company.wsdl.Filestatusrequest"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <arrayMapping
+        xmlns:ns="http://tempuri.org/encoded"
+        qname="ns:ArrayOfGetproductfilesresponseProductline"
+        type="java:com.company.wsdl.GetproductfilesresponseProductline[]"
+        innerType="cmp-ns:getproductfilesresponseProductline" xmlns:cmp-ns="http://tempuri.org/encoded"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <arrayMapping
+        xmlns:ns="http://tempuri.org/encoded"
+        qname="ns:ArrayOfString"
+        type="java:java.lang.String[]"
+        innerType="cmp-ns:string" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://tempuri.org/encoded"
+        qname="ns:getproductfilesresponse"
+        type="java:com.company.wsdl.Getproductfilesresponse"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://tempuri.org/encoded"
+        qname="ns:filestatusresponse"
+        type="java:com.company.wsdl.Filestatusresponse"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://tempuri.org/encoded"
+        qname="ns:getproductfilesresponseProductlineProductfile"
+        type="java:com.company.wsdl.GetproductfilesresponseProductlineProductfile"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+  </service>
+</deployment>
