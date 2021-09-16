@@ -1,0 +1,295 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+	<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapen="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="Service" targetNamespace="http://tempuri.org/">
+		<wsp:Policy wsu:Id="BasicHttpBinding_IService_policy">
+			<wsp:ExactlyOne>
+				<wsp:All>
+					<sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+						<wsp:Policy>
+							<sp:TransportToken>
+								<wsp:Policy>
+									<sp:HttpsToken RequireClientCertificate="false"/>
+								</wsp:Policy>
+							</sp:TransportToken>
+							<sp:AlgorithmSuite>
+								<wsp:Policy>
+									<sp:Basic256/>
+								</wsp:Policy>
+							</sp:AlgorithmSuite>
+							<sp:Layout>
+								<wsp:Policy>
+									<sp:Strict/>
+								</wsp:Policy>
+							</sp:Layout>
+						</wsp:Policy>
+					</sp:TransportBinding>
+				</wsp:All>
+			</wsp:ExactlyOne>
+		</wsp:Policy>
+		<wsdl:types>
+			<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://tempuri.org/encoded" elementFormDefault="qualified" targetNamespace="http://tempuri.org/encoded">
+				<xs:import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+				<xs:import namespace="http://schemas.xmlsoap.org/wsdl/"/>
+					<xs:complexType name="loginresponse">
+						<xs:sequence>
+							<xs:element minOccurs="0" maxOccurs="1" form="unqualified" name="status" type="xs:string"/>
+							<xs:element minOccurs="0" maxOccurs="1" form="unqualified" name="errormessage" type="xs:string"/>
+							<xs:element minOccurs="0" maxOccurs="1" form="unqualified" name="apikey" type="xs:string"/>
+						</xs:sequence>
+					</xs:complexType>
+				<xs:complexType name="logoutresponse">
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="1" form="unqualified" name="status" type="xs:string"/>
+						<xs:element minOccurs="0" maxOccurs="1" form="unqualified" name="errormessage" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+				<xs:complexType name="getfiletypesresponse">
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="1" form="unqualified" name="status" type="xs:string"/>
+						<xs:element minOccurs="0" maxOccurs="1" form="unqualified" name="errormessage" type="xs:string"/>
+						<xs:element minOccurs="0" maxOccurs="1" form="unqualified" name="filetypes" type="tns:ArrayOfString"/>
+					</xs:sequence>
+				</xs:complexType>
+				<xs:complexType name="ArrayOfString">
+					<xs:complexContent mixed="false">
+						<xs:restriction xmlns:q1="http://schemas.xmlsoap.org/soap/encoding/" base="q1:Array">
+							<xs:attribute xmlns:d5p1="http://schemas.xmlsoap.org/wsdl/" d5p1:arrayType="xs:string[]" ref="q1:arrayType"/>
+						</xs:restriction>
+					</xs:complexContent>
+				</xs:complexType>
+					<xs:complexType name="getproductfilesresponse">
+						<xs:sequence>
+							<xs:element minOccurs="0" maxOccurs="1" form="unqualified" name="status" type="xs:string"/>
+							<xs:element minOccurs="0" maxOccurs="1" form="unqualified" name="errormessage" type="xs:string"/>
+							<xs:element minOccurs="0" maxOccurs="1" form="unqualified" name="productlines" type="tns:ArrayOfGetproductfilesresponseProductline"/>
+						</xs:sequence>
+				</xs:complexType>
+				<xs:complexType name="ArrayOfGetproductfilesresponseProductline">
+					<xs:complexContent mixed="false">
+						<xs:restriction xmlns:q2="http://schemas.xmlsoap.org/soap/encoding/" base="q2:Array">
+							<xs:attribute xmlns:d5p1="http://schemas.xmlsoap.org/wsdl/" d5p1:arrayType="tns:getproductfilesresponseProductline[]" ref="q2:arrayType"/>
+						</xs:restriction>
+					</xs:complexContent>
+				</xs:complexType>
+				<xs:complexType name="getproductfilesresponseProductline">
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="1" form="unqualified" name="name" type="xs:string"/>
+						<xs:element minOccurs="0" maxOccurs="1" form="unqualified" name="productfiles" type="tns:ArrayOfGetproductfilesresponseProductlineProductfile"/>
+					</xs:sequence>
+				</xs:complexType>
+				<xs:complexType name="ArrayOfGetproductfilesresponseProductlineProductfile">
+					<xs:complexContent mixed="false">
+						<xs:restriction xmlns:q3="http://schemas.xmlsoap.org/soap/encoding/" base="q3:Array">
+							<xs:attribute xmlns:d5p1="http://schemas.xmlsoap.org/wsdl/" d5p1:arrayType="tns:getproductfilesresponseProductlineProductfile[]" ref="q3:arrayType"/>
+						</xs:restriction>
+					</xs:complexContent>
+				</xs:complexType>
+				<xs:complexType name="getproductfilesresponseProductlineProductfile">
+                                    <xs:sequence>
+                                        <xs:element minOccurs="0" maxOccurs="1" form="unqualified" name="filetype" type="xs:string"/>
+                                        <xs:element minOccurs="0" maxOccurs="1" form="unqualified" name="Value" type="xs:string"/>
+                                    </xs:sequence>
+				</xs:complexType>
+				<xs:complexType name="saveuploadrequest">
+				<xs:sequence>
+				<xs:element minOccurs="0" maxOccurs="1" form="unqualified" name="apikey" type="xs:string"/>
+				<xs:element minOccurs="0" maxOccurs="1" form="unqualified" name="productline" type="xs:string"/>
+				<xs:element minOccurs="0" maxOccurs="1" form="unqualified" name="productfile" type="xs:string"/>
+				<xs:element minOccurs="0" maxOccurs="1" form="unqualified" name="filename" type="xs:string"/>
+				<xs:element minOccurs="0" maxOccurs="1" form="unqualified" name="filetype" type="xs:string"/>
+				<xs:element minOccurs="0" maxOccurs="1" form="unqualified" name="checksumalgo" type="xs:string"/>
+				<xs:element minOccurs="0" maxOccurs="1" form="unqualified" name="checksumhex" type="xs:string"/>
+				</xs:sequence>
+				</xs:complexType>
+				<xs:complexType name="saveuploadresponse">
+				<xs:sequence>
+				<xs:element minOccurs="0" maxOccurs="1" form="unqualified" name="status" type="xs:string"/>
+				<xs:element minOccurs="0" maxOccurs="1" form="unqualified" name="errormessage" type="xs:string"/>
+				</xs:sequence>
+				</xs:complexType>
+				<xs:complexType name="filestatusrequest">
+				<xs:sequence>
+				<xs:element minOccurs="0" maxOccurs="1" form="unqualified" name="apikey" type="xs:string"/>
+				<xs:element minOccurs="0" maxOccurs="1" form="unqualified" name="productline" type="xs:string"/>
+				<xs:element minOccurs="0" maxOccurs="1" form="unqualified" name="productfile" type="xs:string"/>
+				</xs:sequence>
+				</xs:complexType>
+				<xs:complexType name="filestatusresponse">
+				<xs:sequence>
+				<xs:element minOccurs="0" maxOccurs="1" form="unqualified" name="status" type="xs:string"/>
+				<xs:element minOccurs="0" maxOccurs="1" form="unqualified" name="errormessage" type="xs:string"/>
+				<xs:element minOccurs="0" maxOccurs="1" form="unqualified" name="importstatus" type="xs:string"/>
+				<xs:element minOccurs="0" maxOccurs="1" form="unqualified" name="schemaerrorcount" type="xs:string"/>
+				<xs:element minOccurs="0" maxOccurs="1" form="unqualified" name="filerecordcount" type="xs:string"/>
+				<xs:element minOccurs="0" maxOccurs="1" form="unqualified" name="importrecordcount" type="xs:string"/>
+				<xs:element minOccurs="0" maxOccurs="1" form="unqualified" name="importwarningcount" type="xs:string"/>
+				<xs:element minOccurs="0" maxOccurs="1" form="unqualified" name="importerrorcount" type="xs:string"/>
+				<xs:element minOccurs="0" maxOccurs="1" form="unqualified" name="startdate" type="xs:string"/>
+				<xs:element minOccurs="0" maxOccurs="1" form="unqualified" name="completiondate" type="xs:string"/>
+				<xs:element minOccurs="0" maxOccurs="1" form="unqualified" name="importmessages" type="tns:ArrayOfFilestatusresponseImportmessage"/>
+				</xs:sequence>
+				</xs:complexType>
+				<xs:complexType name="ArrayOfFilestatusresponseImportmessage">
+				<xs:complexContent mixed="false">
+				<xs:restriction xmlns:q4="http://schemas.xmlsoap.org/soap/encoding/" base="q4:Array">
+				<xs:attribute xmlns:d5p1="http://schemas.xmlsoap.org/wsdl/" d5p1:arrayType="tns:filestatusresponseImportmessage[]" ref="q4:arrayType"/>
+				</xs:restriction>
+				</xs:complexContent>
+				</xs:complexType>
+				<xs:complexType name="filestatusresponseImportmessage">
+				<xs:sequence>
+				<xs:element minOccurs="0" maxOccurs="1" form="unqualified" name="messagetype" type="xs:string"/>
+				<xs:element minOccurs="0" maxOccurs="1" form="unqualified" name="message" type="xs:string"/>
+				<xs:element minOccurs="0" maxOccurs="1" form="unqualified" name="timeindex" type="xs:string"/>
+				</xs:sequence>
+				</xs:complexType>
+			</xs:schema>
+		</wsdl:types>
+		<wsdl:message name="IService_Login_InputMessage">
+		<wsdl:part name="username" type="xsd:string"/>
+		<wsdl:part name="password" type="xsd:string"/>
+		</wsdl:message>
+		<wsdl:message name="IService_Login_OutputMessage">
+		<wsdl:part xmlns:q1="http://tempuri.org/encoded" name="LoginResult" type="q1:loginresponse"/>
+		</wsdl:message>
+		<wsdl:message name="IService_Logout_InputMessage">
+		<wsdl:part name="apikey" type="xsd:string"/>
+		</wsdl:message>
+		<wsdl:message name="IService_Logout_OutputMessage">
+		<wsdl:part xmlns:q2="http://tempuri.org/encoded" name="LogoutResult" type="q2:logoutresponse"/>
+		</wsdl:message>
+		<wsdl:message name="IService_GetFileTypes_InputMessage">
+		<wsdl:part name="apikey" type="xsd:string"/>
+		</wsdl:message>
+		<wsdl:message name="IService_GetFileTypes_OutputMessage">
+		<wsdl:part xmlns:q3="http://tempuri.org/encoded" name="GetFileTypesResult" type="q3:getfiletypesresponse"/>
+		</wsdl:message>
+		<wsdl:message name="IService_GetProductFiles_InputMessage">
+		<wsdl:part name="apikey" type="xsd:string"/>
+		</wsdl:message>
+		<wsdl:message name="IService_GetProductFiles_OutputMessage">
+		<wsdl:part xmlns:q4="http://tempuri.org/encoded" name="GetProductFilesResult" type="q4:getproductfilesresponse"/>
+		</wsdl:message>
+		<wsdl:message name="IService_UploadFileChunk_InputMessage">
+		<wsdl:part name="apikey" type="xsd:string"/>
+		<wsdl:part name="filename" type="xsd:string"/>
+		<wsdl:part name="buffer" type="xsd:base64Binary"/>
+		<wsdl:part name="Offset" type="xsd:long"/>
+		</wsdl:message>
+		<wsdl:message name="IService_UploadFileChunk_OutputMessage">
+		<wsdl:part name="UploadFileChunkResult" type="xsd:string"/>
+		</wsdl:message>
+		<wsdl:message name="IService_SaveUpload_InputMessage">
+		<wsdl:part xmlns:q5="http://tempuri.org/encoded" name="params" type="q5:saveuploadrequest"/>
+		</wsdl:message>
+		<wsdl:message name="IService_SaveUpload_OutputMessage">
+		<wsdl:part xmlns:q6="http://tempuri.org/encoded" name="SaveUploadResult" type="q6:saveuploadresponse"/>
+		</wsdl:message>
+		<wsdl:message name="IService_GetFileImportStatus_InputMessage">
+		<wsdl:part xmlns:q7="http://tempuri.org/encoded" name="params" type="q7:filestatusrequest"/>
+		</wsdl:message>
+		<wsdl:message name="IService_GetFileImportStatus_OutputMessage">
+		<wsdl:part xmlns:q8="http://tempuri.org/encoded" name="GetFileImportStatusResult" type="q8:filestatusresponse"/>
+		</wsdl:message>
+		<wsdl:portType name="IService">
+		<wsdl:operation name="Login" parameterOrder="username password">
+		<wsdl:input wsaw:Action="http://tempuri.org/IService/Login" message="tns:IService_Login_InputMessage"/>
+		<wsdl:output wsaw:Action="http://tempuri.org/IService/LoginResponse" message="tns:IService_Login_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="Logout" parameterOrder="apikey">
+		<wsdl:input wsaw:Action="http://tempuri.org/IService/Logout" message="tns:IService_Logout_InputMessage"/>
+		<wsdl:output wsaw:Action="http://tempuri.org/IService/LogoutResponse" message="tns:IService_Logout_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="GetFileTypes" parameterOrder="apikey">
+		<wsdl:input wsaw:Action="http://tempuri.org/IService/GetFileTypes" message="tns:IService_GetFileTypes_InputMessage"/>
+		<wsdl:output wsaw:Action="http://tempuri.org/IService/GetFileTypesResponse" message="tns:IService_GetFileTypes_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="GetProductFiles" parameterOrder="apikey">
+		<wsdl:input wsaw:Action="http://tempuri.org/IService/GetProductFiles" message="tns:IService_GetProductFiles_InputMessage"/>
+		<wsdl:output wsaw:Action="http://tempuri.org/IService/GetProductFilesResponse" message="tns:IService_GetProductFiles_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="UploadFileChunk" parameterOrder="apikey filename buffer Offset">
+		<wsdl:input wsaw:Action="http://tempuri.org/IService/UploadFileChunk" message="tns:IService_UploadFileChunk_InputMessage"/>
+		<wsdl:output wsaw:Action="http://tempuri.org/IService/UploadFileChunkResponse" message="tns:IService_UploadFileChunk_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="SaveUpload" parameterOrder="params">
+		<wsdl:input wsaw:Action="http://tempuri.org/IService/SaveUpload" message="tns:IService_SaveUpload_InputMessage"/>
+		<wsdl:output wsaw:Action="http://tempuri.org/IService/SaveUploadResponse" message="tns:IService_SaveUpload_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="GetFileImportStatus" parameterOrder="params">
+		<wsdl:input wsaw:Action="http://tempuri.org/IService/GetFileImportStatus" message="tns:IService_GetFileImportStatus_InputMessage"/>
+		<wsdl:output wsaw:Action="http://tempuri.org/IService/GetFileImportStatusResponse" message="tns:IService_GetFileImportStatus_OutputMessage"/>
+		</wsdl:operation>
+		</wsdl:portType>
+		<wsdl:binding name="BasicHttpBinding_IService" type="tns:IService">
+		<wsp:PolicyReference URI="#BasicHttpBinding_IService_policy"/>
+		<soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc"/>
+		<wsdl:operation name="Login">
+		<soap:operation soapAction="http://tempuri.org/IService/Login" style="rpc"/>
+		<wsdl:input>
+		<soap:body use="encoded" namespace="http://tempuri.org/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</wsdl:input>
+		<wsdl:output>
+		<soap:body use="encoded" namespace="http://tempuri.org/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Logout">
+		<soap:operation soapAction="http://tempuri.org/IService/Logout" style="rpc"/>
+		<wsdl:input>
+		<soap:body use="encoded" namespace="http://tempuri.org/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</wsdl:input>
+		<wsdl:output>
+		<soap:body use="encoded" namespace="http://tempuri.org/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetFileTypes">
+		<soap:operation soapAction="http://tempuri.org/IService/GetFileTypes" style="rpc"/>
+		<wsdl:input>
+		<soap:body use="encoded" namespace="http://tempuri.org/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</wsdl:input>
+		<wsdl:output>
+		<soap:body use="encoded" namespace="http://tempuri.org/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetProductFiles">
+		<soap:operation soapAction="http://tempuri.org/IService/GetProductFiles" style="rpc"/>
+		<wsdl:input>
+		<soap:body use="encoded" namespace="http://tempuri.org/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</wsdl:input>
+		<wsdl:output>
+		<soap:body use="encoded" namespace="http://tempuri.org/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="UploadFileChunk">
+		<soap:operation soapAction="http://tempuri.org/IService/UploadFileChunk" style="rpc"/>
+		<wsdl:input>
+		<soap:body use="encoded" namespace="http://tempuri.org/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</wsdl:input>
+		<wsdl:output>
+		<soap:body use="encoded" namespace="http://tempuri.org/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="SaveUpload">
+		<soap:operation soapAction="http://tempuri.org/IService/SaveUpload" style="rpc"/>
+		<wsdl:input>
+		<soap:body use="encoded" namespace="http://tempuri.org/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</wsdl:input>
+		<wsdl:output>
+		<soap:body use="encoded" namespace="http://tempuri.org/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetFileImportStatus">
+		<soap:operation soapAction="http://tempuri.org/IService/GetFileImportStatus" style="rpc"/>
+		<wsdl:input>
+		<soap:body use="encoded" namespace="http://tempuri.org/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</wsdl:input>
+		<wsdl:output>
+		<soap:body use="encoded" namespace="http://tempuri.org/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</wsdl:output>
+		</wsdl:operation>
+		</wsdl:binding>
+		<wsdl:service name="Service">
+		<wsdl:port name="BasicHttpBinding_IService" binding="tns:BasicHttpBinding_IService">
+		<soap:address location="https://opticat1.net/OBWS/Service.svc"/>
+		</wsdl:port>
+		</wsdl:service>
+	</wsdl:definitions>

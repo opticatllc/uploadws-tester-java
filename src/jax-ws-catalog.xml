@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="file:/C:/Users/EduardoZetina/Documents/NetBeansProjects/demoWsDos/src/main/java/SW/Service.wsdl" uri="wsdl/Service.wsdl"/>
+</catalog>
