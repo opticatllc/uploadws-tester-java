@@ -1,0 +1,244 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!--
+    TODO define vocabulary identification
+    PUBLIC ID: -//vendor//vocabulary//EN
+    SYSTEM ID: http://server/path/Service.dtd
+
+-->
+
+<!--
+    An example how to use this DTD from your XML document:
+
+    <?xml version="1.0"?>
+
+    <!DOCTYPE wsdl:definitions SYSTEM "Service.dtd">
+
+    <wsdl:definitions>
+    ...
+    </wsdl:definitions>
+-->
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT wsdl:definitions (wsdl:types|wsdl:service|wsdl:binding|wsp:Policy|wsdl:message|wsdl:portType)*>
+<!ATTLIST wsdl:definitions
+    name CDATA #IMPLIED
+    targetNamespace CDATA #IMPLIED
+    xmlns:wsdl CDATA #IMPLIED
+    xmlns:tns CDATA #IMPLIED
+    xmlns:wsu CDATA #IMPLIED
+    xmlns:wsx CDATA #IMPLIED
+    xmlns:msc CDATA #IMPLIED
+    xmlns:wsam CDATA #IMPLIED
+    xmlns:wsa10 CDATA #IMPLIED
+    xmlns:soap CDATA #IMPLIED
+    xmlns:wsap CDATA #IMPLIED
+    xmlns:soap12 CDATA #IMPLIED
+    xmlns:wsp CDATA #IMPLIED
+    xmlns:xsd CDATA #IMPLIED
+    xmlns:soapen CDATA #IMPLIED
+    xmlns:wsaw CDATA #IMPLIED
+    xmlns:wsa CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT wsp:Policy (sp:Basic256|sp:Strict|sp:TransportToken|sp:HttpsToken|sp:AlgorithmSuite|sp:Layout|wsp:ExactlyOne)*>
+<!ATTLIST wsp:Policy
+    wsu:Id CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT wsp:ExactlyOne (wsp:All)*>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT wsp:All (sp:TransportBinding)*>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT sp:TransportBinding (wsp:Policy)*>
+<!ATTLIST sp:TransportBinding
+    xmlns:sp CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT sp:TransportToken (wsp:Policy)*>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT sp:HttpsToken EMPTY>
+<!ATTLIST sp:HttpsToken
+    RequireClientCertificate CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT sp:AlgorithmSuite (wsp:Policy)*>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT sp:Basic256 EMPTY>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT sp:Layout (wsp:Policy)*>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT sp:Strict EMPTY>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT wsdl:types (xs:schema)*>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT xs:schema (xs:complexType|xs:import)*>
+<!ATTLIST xs:schema
+    elementFormDefault CDATA #IMPLIED
+    targetNamespace CDATA #IMPLIED
+    xmlns:tns CDATA #IMPLIED
+    xmlns:xs CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT xs:import EMPTY>
+<!ATTLIST xs:import
+    namespace CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT xs:complexType (xs:sequence|xs:complexContent)*>
+<!ATTLIST xs:complexType
+    name CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT xs:sequence (xs:element)*>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT xs:element EMPTY>
+<!ATTLIST xs:element
+    minOccurs CDATA #IMPLIED
+    maxOccurs CDATA #IMPLIED
+    form CDATA #IMPLIED
+    name CDATA #IMPLIED
+    type CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT xs:complexContent (xs:restriction)*>
+<!ATTLIST xs:complexContent
+    mixed CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT xs:restriction (xs:attribute)*>
+<!ATTLIST xs:restriction
+    base CDATA #IMPLIED
+    xmlns:q3 CDATA #IMPLIED
+    xmlns:q4 CDATA #IMPLIED
+    xmlns:q1 CDATA #IMPLIED
+    xmlns:q2 CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT xs:attribute EMPTY>
+<!ATTLIST xs:attribute
+    ref CDATA #IMPLIED
+    d5p1:arrayType CDATA #IMPLIED
+    xmlns:d5p1 CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT wsdl:message (wsdl:part)*>
+<!ATTLIST wsdl:message
+    name CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT wsdl:part EMPTY>
+<!ATTLIST wsdl:part
+    name CDATA #IMPLIED
+    type CDATA #IMPLIED
+    xmlns:q5 CDATA #IMPLIED
+    xmlns:q6 CDATA #IMPLIED
+    xmlns:q3 CDATA #IMPLIED
+    xmlns:q4 CDATA #IMPLIED
+    xmlns:q7 CDATA #IMPLIED
+    xmlns:q8 CDATA #IMPLIED
+    xmlns:q1 CDATA #IMPLIED
+    xmlns:q2 CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT wsdl:portType (wsdl:operation)*>
+<!ATTLIST wsdl:portType
+    name CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT wsdl:operation (wsdl:input|soap:operation|wsdl:output)*>
+<!ATTLIST wsdl:operation
+    name CDATA #IMPLIED
+    parameterOrder CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT wsdl:input (soap:body)*>
+<!ATTLIST wsdl:input
+    message CDATA #IMPLIED
+    wsaw:Action CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT wsdl:output (soap:body)*>
+<!ATTLIST wsdl:output
+    message CDATA #IMPLIED
+    wsaw:Action CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT wsdl:binding (wsdl:operation|wsp:PolicyReference|soap:binding)*>
+<!ATTLIST wsdl:binding
+    name CDATA #IMPLIED
+    type CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT wsp:PolicyReference EMPTY>
+<!ATTLIST wsp:PolicyReference
+    URI CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT soap:binding EMPTY>
+<!ATTLIST soap:binding
+    transport CDATA #IMPLIED
+    style CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT soap:operation EMPTY>
+<!ATTLIST soap:operation
+    soapAction CDATA #IMPLIED
+    style CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT soap:body EMPTY>
+<!ATTLIST soap:body
+    use CDATA #IMPLIED
+    namespace CDATA #IMPLIED
+    encodingStyle CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT wsdl:service (wsdl:port)*>
+<!ATTLIST wsdl:service
+    name CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT wsdl:port (soap:address)*>
+<!ATTLIST wsdl:port
+    name CDATA #IMPLIED
+    binding CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT soap:address EMPTY>
+<!ATTLIST soap:address
+    location CDATA #IMPLIED
+  >
