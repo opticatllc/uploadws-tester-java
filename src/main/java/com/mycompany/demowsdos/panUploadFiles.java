@@ -457,6 +457,7 @@ private void connectToService (int intServ){
                    default:
                         this.txtResp.setText(this.txtResp.getText() + "Processing ...\n" );
                         break;
+                        
                }            
             }catch (MalformedURLException ex) {
                 Logger.getLogger(mainForm.class.getName()).log(Level.SEVERE, null, ex);

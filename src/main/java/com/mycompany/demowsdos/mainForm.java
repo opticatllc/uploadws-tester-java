@@ -16,6 +16,7 @@ public class mainForm extends javax.swing.JFrame {
 
     panIntro panInt = new panIntro();
     panUploadFiles panLoad = new panUploadFiles();
+    panLogin panLog =  new panLogin();
     /**
      * Creates new form mainForm
      */
@@ -115,6 +116,8 @@ public class mainForm extends javax.swing.JFrame {
         panInt = new panIntro();
         tabMain.addTab("Introducton", panInt);
         tabMain.addTab("Upload files", panLoad);
+        tabMain.addTab("Login  and Logout", panLog);
+
         tabMain.setSelectedComponent(panInt);
         
        
