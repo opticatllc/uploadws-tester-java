@@ -11,14 +11,17 @@ com\mycompany\demowsdos\panUploadFiles.class
 com\company\wsdl\Saveuploadresponse.class
 com\company\wsdl\BasicHttpBinding_IServiceStub.class
 com\company\wsdl\ServiceLocator.class
+com\mycompany\demowsdos\panLogin$1.class
 com\company\wsdl\GetproductfilesresponseProductline.class
 com\company\wsdl\Service.class
 com\mycompany\demowsdos\panIntro.class
 com\mycompany\demowsdos\panUploadFiles$6.class
 com\company\wsdl\BasicHttpBinding_IServiceImpl.class
+com\mycompany\demowsdos\panLogin.class
 com\mycompany\demowsdos\panUploadFiles$1.class
 com\company\wsdl\Filestatusrequest.class
 com\mycompany\demowsdos\panUploadFiles$5.class
+com\mycompany\demowsdos\panLogin$2.class
 com\company\wsdl\Getfiletypesresponse.class
 com\mycompany\demowsdos\mainForm.class
 Models\ProductLine.class
