@@ -6,7 +6,13 @@
 
 package com.mycompany.demowsdos;
 
-
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
 
 /**
  *
@@ -16,13 +22,25 @@ public class mainForm extends javax.swing.JFrame {
 
     panIntro panInt = new panIntro();
     panUploadFiles panLoad = new panUploadFiles();
+    panFileStatus panStatus = new panFileStatus();
     panLogin panLog =  new panLogin();
+    panExit panExi =  new panExit();
     /**
      * Creates new form mainForm
      */
     public mainForm() {
         initComponents();
+        this.setLocationRelativeTo(null);
         chargeTabs();
+    }
+    
+    @Override
+    public Image getIconImage(){
+        Image retValue = Toolkit.getDefaultToolkit().getImage("src\\main\\java\\Miselaneous\\optiCat.png");
+        //Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("Miselaneous/optiCat.png"));
+        //Before asign the new icon, we have to set up the "iconImage" property to "Value from existing component"
+        //choosing the option "Property" to establish  it as "iconImage"
+        return retValue;
     }
 
     /**
@@ -40,23 +58,15 @@ public class mainForm extends javax.swing.JFrame {
         jCheckBox1.setText("jCheckBox1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setIconImage(getIconImage());
+        setUndecorated(true);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(tabMain, javax.swing.GroupLayout.DEFAULT_SIZE, 711, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(tabMain, javax.swing.GroupLayout.DEFAULT_SIZE, 425, Short.MAX_VALUE)
-                .addContainerGap())
-        );
+        tabMain.setBackground(new java.awt.Color(0, 0, 0));
+        tabMain.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        tabMain.setForeground(new java.awt.Color(228, 239, 22));
+        tabMain.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        getContentPane().add(tabMain, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 11, 711, 448));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -116,8 +126,28 @@ public class mainForm extends javax.swing.JFrame {
         panInt = new panIntro();
         tabMain.addTab("Introducton", panInt);
         tabMain.addTab("Upload files", panLoad);
+        tabMain.addTab("File Status", panStatus);
         tabMain.addTab("Login  and Logout", panLog);
-
+        tabMain.addTab("", panExi);
+        //add button to exit
+        JButton btnClose =  new JButton("Exit");
+        btnClose.setBorder(null);
+        btnClose.setFocusPainted(false);
+        btnClose.setContentAreaFilled(false);
+        btnClose.setPreferredSize(new Dimension(25,20));
+        Font font = new Font("Tahoma", Font.BOLD, 11);
+        btnClose.setFont(font);
+        btnClose.addActionListener(new ActionListener(){
+        
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+        //btnclose.setFont(arg0);
+        tabMain.setTabComponentAt(4, btnClose);
+        
+        
         tabMain.setSelectedComponent(panInt);
         
        

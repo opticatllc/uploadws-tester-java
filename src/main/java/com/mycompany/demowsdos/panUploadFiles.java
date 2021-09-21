@@ -7,6 +7,9 @@ package com.mycompany.demowsdos;
 
 import Models.ProductLine;
 import com.company.wsdl.BasicHttpBinding_IServiceStub;
+import com.company.wsdl.Filestatusrequest;
+import com.company.wsdl.Filestatusresponse;
+import com.company.wsdl.FilestatusresponseImportmessage;
 import com.company.wsdl.Getfiletypesresponse;
 import com.company.wsdl.Getproductfilesresponse;
 import com.company.wsdl.GetproductfilesresponseProductline;
@@ -44,6 +47,7 @@ import org.apache.axis.client.Stub;
 public class panUploadFiles extends javax.swing.JPanel {
     private static final int GETFILETYPES = 1;
     private static final int UPLOADCHUNKS = 2;
+    private static final int GETSTATUS = 3;
     //global vaiables
     File selectFile;
     List<ProductLine> lstProducts = new ArrayList<>();
@@ -61,9 +65,11 @@ public class panUploadFiles extends javax.swing.JPanel {
         initComponents();
         //lstFilTyp.setModel(model);
         this.btnChoFile.setEnabled(false);
-        this.btnImport.setEnabled(false);
+        this.btnGetStatus.setEnabled(false);
         this.txtFile.setEditable(false);
         this.btnSaave.setEnabled(false);
+        ImageIcon icon=new ImageIcon("src\\main\\java\\Miselaneous\\jaguar2.jpg");
+        lblBacGro.setIcon(icon);
        
     }
 
@@ -86,143 +92,150 @@ public class panUploadFiles extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         cmbFilTyp = new javax.swing.JComboBox<>();
         btnChoFile = new javax.swing.JButton();
-        btnImport = new javax.swing.JButton();
+        btnGetStatus = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         cmbLines = new javax.swing.JComboBox<>();
         cmbProduct = new javax.swing.JComboBox<>();
         btnSaave = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        txtCheHex = new javax.swing.JTextField();
+        lblBacGro = new javax.swing.JLabel();
 
+        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel1.setForeground(new java.awt.Color(228, 239, 22));
         jLabel1.setText("ApiKey:");
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 0, 50, -1));
 
+        txtApiKey.setBackground(new java.awt.Color(102, 102, 102));
+        txtApiKey.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        txtApiKey.setForeground(new java.awt.Color(228, 239, 22));
         txtApiKey.setToolTipText("Enter your Api Key");
+        add(txtApiKey, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 16, 680, -1));
 
-        btnSenGetFil.setText("GetFilesType");
+        btnSenGetFil.setBackground(new java.awt.Color(0, 0, 0));
+        btnSenGetFil.setForeground(new java.awt.Color(228, 239, 22));
+        btnSenGetFil.setText("Get Files Type");
+        btnSenGetFil.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnSenGetFil.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSenGetFilActionPerformed(evt);
             }
         });
+        add(btnSenGetFil, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 47, 120, -1));
 
+        txtResp.setBackground(new java.awt.Color(102, 102, 102));
         txtResp.setColumns(20);
+        txtResp.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        txtResp.setForeground(new java.awt.Color(228, 239, 22));
         txtResp.setRows(5);
         jScrollPane1.setViewportView(txtResp);
 
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 60, 488, 194));
+
+        jLabel4.setForeground(new java.awt.Color(228, 239, 22));
         jLabel4.setText("Response:");
+        add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 40, -1, -1));
 
+        txtFile.setBackground(new java.awt.Color(102, 102, 102));
+        txtFile.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        txtFile.setForeground(new java.awt.Color(228, 239, 22));
+        add(txtFile, new org.netbeans.lib.awtextra.AbsoluteConstraints(112, 277, 488, -1));
+
+        jLabel2.setForeground(new java.awt.Color(228, 239, 22));
         jLabel2.setText("File Type:");
+        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 84, 63, -1));
 
+        cmbFilTyp.setBackground(new java.awt.Color(102, 102, 102));
+        cmbFilTyp.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        cmbFilTyp.setForeground(new java.awt.Color(255, 255, 255));
+        cmbFilTyp.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         cmbFilTyp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbFilTypActionPerformed(evt);
             }
         });
+        add(cmbFilTyp, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 104, 129, -1));
 
+        btnChoFile.setBackground(new java.awt.Color(0, 0, 0));
+        btnChoFile.setForeground(new java.awt.Color(228, 239, 22));
         btnChoFile.setText("File ...");
+        btnChoFile.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnChoFile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnChoFileActionPerformed(evt);
             }
         });
+        add(btnChoFile, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 276, 69, -1));
 
-        btnImport.setText("Upload file ...");
-        btnImport.addActionListener(new java.awt.event.ActionListener() {
+        btnGetStatus.setBackground(new java.awt.Color(0, 0, 0));
+        btnGetStatus.setForeground(new java.awt.Color(228, 239, 22));
+        btnGetStatus.setText("Get Status");
+        btnGetStatus.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnGetStatus.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnImportActionPerformed(evt);
+                btnGetStatusActionPerformed(evt);
             }
         });
+        add(btnGetStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 370, 90, -1));
 
+        jLabel5.setForeground(new java.awt.Color(228, 239, 22));
         jLabel5.setText("Product  lines:");
+        add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 310, 80, -1));
 
+        jLabel6.setForeground(new java.awt.Color(228, 239, 22));
         jLabel6.setText("Product files:");
+        add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 310, 71, -1));
 
+        cmbLines.setBackground(new java.awt.Color(102, 102, 102));
+        cmbLines.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        cmbLines.setForeground(new java.awt.Color(255, 255, 255));
+        cmbLines.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         cmbLines.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbLinesActionPerformed(evt);
             }
         });
+        add(cmbLines, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 310, 183, -1));
 
+        cmbProduct.setBackground(new java.awt.Color(102, 102, 102));
+        cmbProduct.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        cmbProduct.setForeground(new java.awt.Color(255, 255, 255));
+        cmbProduct.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        add(cmbProduct, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 310, 202, -1));
+
+        btnSaave.setBackground(new java.awt.Color(0, 0, 0));
+        btnSaave.setForeground(new java.awt.Color(228, 239, 22));
         btnSaave.setText("Upload file ..");
+        btnSaave.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnSaave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSaaveActionPerformed(evt);
             }
         });
+        add(btnSaave, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 280, -1, -1));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnChoFile, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(cmbLines, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(cmbProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(txtFile, javax.swing.GroupLayout.PREFERRED_SIZE, 488, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnImport)
-                            .addComponent(btnSaave))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(txtApiKey, javax.swing.GroupLayout.PREFERRED_SIZE, 690, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnSenGetFil)
-                                    .addComponent(cmbFilTyp, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(75, 75, 75)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 488, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addContainerGap(111, Short.MAX_VALUE))))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jLabel1)
-                .addGap(1, 1, 1)
-                .addComponent(txtApiKey, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnSenGetFil)
-                        .addGap(14, 14, 14)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cmbFilTyp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnChoFile)
-                            .addComponent(txtFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnSaave))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(7, 7, 7)
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(cmbLines, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6)
-                    .addComponent(cmbProduct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnImport))
-                .addGap(53, 53, 53))
-        );
+        jLabel3.setForeground(new java.awt.Color(228, 239, 22));
+        jLabel3.setText("Checksum algo:");
+        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 340, 90, -1));
+
+        jTextField1.setBackground(new java.awt.Color(102, 102, 102));
+        jTextField1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jTextField1.setForeground(new java.awt.Color(228, 239, 22));
+        add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 340, 74, -1));
+
+        jLabel7.setForeground(new java.awt.Color(228, 239, 22));
+        jLabel7.setText("Checksum Hex:");
+        add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 340, 100, -1));
+
+        txtCheHex.setBackground(new java.awt.Color(102, 102, 102));
+        txtCheHex.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        txtCheHex.setForeground(new java.awt.Color(228, 239, 22));
+        add(txtCheHex, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 340, 348, -1));
+        add(lblBacGro, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 730, 420));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSenGetFilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSenGetFilActionPerformed
@@ -273,14 +286,15 @@ public class panUploadFiles extends javax.swing.JPanel {
         
     }//GEN-LAST:event_cmbFilTypActionPerformed
 
-    private void btnImportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportActionPerformed
+    private void btnGetStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGetStatusActionPerformed
         if (selectFile.isFile())
         {
-            this.txtResp.setText(this.txtResp.getText() + "Uploading file, please wait ... \n" );
-            connectToService(UPLOADCHUNKS);
+            this.txtResp.setText(this.txtResp.getText() + "Getting status file, please wait ... \n" );
+            connectToService(GETSTATUS);
+            btnGetStatus.setEnabled(true);
             
         }
-    }//GEN-LAST:event_btnImportActionPerformed
+    }//GEN-LAST:event_btnGetStatusActionPerformed
 
     private void cmbLinesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbLinesActionPerformed
         
@@ -416,8 +430,9 @@ private void connectToService (int intServ){
                             
                             
                             this.txtResp.setText(this.txtResp.getText() + "To upload a file:\n");
-                            this.txtResp.setText(this.txtResp.getText() + "  * Find and select the desired file\n");
+                            this.txtResp.setText(this.txtResp.getText() + "  * Search and select the desired file\n");
                             this.txtResp.setText(this.txtResp.getText() + "  * Select the line and file of product\n");
+                            this.txtResp.setText(this.txtResp.getText() + "  * Click on the \"Upload File\" button \n");
                             //managing controls
                             txtApiKey.setEditable(false);
                             btnSenGetFil.setEnabled(false);
@@ -446,7 +461,41 @@ private void connectToService (int intServ){
                            
                            String status = responseUp.getStatus() + ", " + responseUp.getErrormessage();
                            this.txtResp.setText(this.txtResp.getText() + "Status: " + status + "\n");
+                           if(status.contains("Ok"))
+                               btnGetStatus.setEnabled(true);
 
+                        }
+                        catch (RemoteException ex) {
+                            Logger.getLogger(mainForm.class.getName()).log(Level.SEVERE, null, ex);
+                            this.txtResp.setText(this.txtResp.getText() + "Service error: " + ex.getMessage() + "\n");
+                        }
+                       }
+                       break;
+                   case 3:
+                       if (! this.txtFile.getText().isEmpty()) 
+                       {
+                        Filestatusresponse responseSatatus;
+                        //FilestatusresponseImportmessage responseMessage;
+                        try {
+                            Filestatusrequest params = new  Filestatusrequest();
+                            params.setApikey(this.txtApiKey.getText());
+                            params.setProductfile(this.cmbProduct.getSelectedItem().toString());
+                            params.setProductline(this.cmbLines.getSelectedItem().toString());
+
+                            responseSatatus = stub.getFileImportStatus(params);
+                            
+                            //responseMessage = responseSatatus.getImportmessages();
+                           
+                           String status = responseSatatus.getStatus() + ", " + responseSatatus.getErrormessage();
+                           if(status.indexOf("Error")>=0)
+                                this.txtResp.setText(this.txtResp.getText() + "Status: " + status + "\n");
+                           else if(status.indexOf("Ok")>=0){
+                               this.txtResp.setText(this.txtResp.getText() + "File uploaded successfully, please check the status tab\n");
+                               
+                               panFileStatus panStatus = new panFileStatus();
+                               panStatus.fillStatus(responseSatatus);
+                               
+                           }
                         }
                         catch (RemoteException ex) {
                             Logger.getLogger(mainForm.class.getName()).log(Level.SEVERE, null, ex);
@@ -481,8 +530,11 @@ private void uploadFile (byte[]  byteArray, int intPos)
                 try {
 
                     String strResp = stub.uploadFileChunk(this.txtApiKey.getText(), selectFile.getName().toString(),  byteArray, intPos);
-                    connectToService(UPLOADCHUNKS);
-                    this.txtResp.setText(this.txtResp.getText() + "UploadFile: File " + selectFile.getName().toString() + " uploaded. \n");
+                    if (strResp.indexOf("Error") <0){
+                        connectToService(UPLOADCHUNKS);
+                        this.txtResp.setText(this.txtResp.getText() + "UploadFile: File " + selectFile.getName().toString() + " uploaded. \n");
+                    
+                    }
                 }
                 catch (RemoteException ex) {
                     Logger.getLogger(mainForm.class.getName()).log(Level.SEVERE, null, ex);
@@ -503,7 +555,7 @@ private void uploadFile (byte[]  byteArray, int intPos)
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnChoFile;
-    private javax.swing.JButton btnImport;
+    private javax.swing.JButton btnGetStatus;
     private javax.swing.JButton btnSaave;
     private javax.swing.JButton btnSenGetFil;
     private javax.swing.JComboBox<String> cmbFilTyp;
@@ -511,11 +563,16 @@ private void uploadFile (byte[]  byteArray, int intPos)
     private javax.swing.JComboBox<String> cmbProduct;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel lblBacGro;
     private javax.swing.JTextField txtApiKey;
+    private javax.swing.JTextField txtCheHex;
     private javax.swing.JTextField txtFile;
     private javax.swing.JTextArea txtResp;
     // End of variables declaration//GEN-END:variables
