@@ -14,6 +14,7 @@ import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.xml.rpc.ServiceException;
 
@@ -31,6 +32,8 @@ public class panLogin extends javax.swing.JPanel {
      */
     public panLogin() {
         initComponents();
+        ImageIcon icon=new ImageIcon("src\\main\\java\\Miselaneous\\jaguar2.jpg");
+        lblBacGro.setIcon(icon);
         this.txtResp.setEditable(false);
     }
 
@@ -53,81 +56,79 @@ public class panLogin extends javax.swing.JPanel {
         btnLogOut = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtResp = new javax.swing.JTextArea();
+        jLabel4 = new javax.swing.JLabel();
+        lblBacGro = new javax.swing.JLabel();
 
+        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        txtUser.setBackground(new java.awt.Color(102, 102, 102));
+        txtUser.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        txtUser.setForeground(new java.awt.Color(228, 239, 22));
         txtUser.setToolTipText("Enter your User Name");
+        add(txtUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 20, 120, -1));
 
+        txtApiKey.setBackground(new java.awt.Color(102, 102, 102));
+        txtApiKey.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        txtApiKey.setForeground(new java.awt.Color(228, 239, 22));
+        add(txtApiKey, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 100, 610, -1));
+
+        jLabel1.setForeground(new java.awt.Color(228, 239, 22));
         jLabel1.setText("User name:");
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 26, 65, -1));
 
+        jLabel2.setForeground(new java.awt.Color(228, 239, 22));
         jLabel2.setText("Password:");
+        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 64, 65, -1));
 
+        jLabel3.setForeground(new java.awt.Color(228, 239, 22));
         jLabel3.setText("New Api Key:");
+        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 105, 80, -1));
 
+        pwdPass.setBackground(new java.awt.Color(102, 102, 102));
+        pwdPass.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        pwdPass.setForeground(new java.awt.Color(228, 239, 22));
         pwdPass.setToolTipText("Enter you Password");
+        add(pwdPass, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 60, 120, -1));
 
+        btnLogIn.setBackground(new java.awt.Color(0, 0, 0));
+        btnLogIn.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnLogIn.setForeground(new java.awt.Color(228, 239, 22));
         btnLogIn.setText("Login");
         btnLogIn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLogInActionPerformed(evt);
             }
         });
+        add(btnLogIn, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 140, 70, -1));
 
+        btnLogOut.setBackground(new java.awt.Color(0, 0, 0));
+        btnLogOut.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnLogOut.setForeground(new java.awt.Color(228, 239, 22));
         btnLogOut.setText("Logout");
         btnLogOut.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLogOutActionPerformed(evt);
             }
         });
+        add(btnLogOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 140, 80, -1));
 
+        txtResp.setBackground(new java.awt.Color(102, 102, 102));
         txtResp.setColumns(20);
+        txtResp.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        txtResp.setForeground(new java.awt.Color(228, 239, 22));
         txtResp.setRows(5);
         jScrollPane1.setViewportView(txtResp);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnLogIn)
-                        .addGap(40, 40, 40)
-                        .addComponent(btnLogOut))
-                    .addComponent(txtApiKey)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(txtUser, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(pwdPass, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 601, Short.MAX_VALUE))
-                .addContainerGap(31, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(pwdPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(21, 21, 21)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtApiKey, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnLogIn)
-                    .addComponent(btnLogOut))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(23, Short.MAX_VALUE))
-        );
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(95, 181, 610, -1));
+
+        jLabel4.setBackground(new java.awt.Color(0, 0, 0));
+        jLabel4.setForeground(new java.awt.Color(228, 239, 22));
+        jLabel4.setText("Response:");
+        add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 180, 70, -1));
+
+        lblBacGro.setBackground(new java.awt.Color(0, 0, 0));
+        lblBacGro.setForeground(new java.awt.Color(228, 239, 22));
+        add(lblBacGro, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 760, 430));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLogInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogInActionPerformed
@@ -158,7 +159,9 @@ public class panLogin extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblBacGro;
     private javax.swing.JPasswordField pwdPass;
     private javax.swing.JTextField txtApiKey;
     private javax.swing.JTextArea txtResp;
