@@ -7,7 +7,7 @@ SDK: 1.8
 
 Version: 1.1
 
-Description: Basic version to upload files using Opticat WS (Depeloping)
+Description: Basic version to upload files using Opticat WS (Developing)
 
 Dependencies:
 
