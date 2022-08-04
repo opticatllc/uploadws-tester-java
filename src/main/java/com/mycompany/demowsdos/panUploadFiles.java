@@ -110,7 +110,7 @@ public class panUploadFiles extends javax.swing.JPanel {
         txtApiKey.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         txtApiKey.setForeground(new java.awt.Color(228, 239, 22));
         txtApiKey.setToolTipText("Enter your Api Key");
-        add(txtApiKey, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 16, 680, -1));
+        add(txtApiKey, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 16, 280, -1));
 
         btnSenGetFil.setBackground(new java.awt.Color(0, 0, 0));
         btnSenGetFil.setForeground(new java.awt.Color(228, 239, 22));
@@ -121,7 +121,7 @@ public class panUploadFiles extends javax.swing.JPanel {
                 btnSenGetFilActionPerformed(evt);
             }
         });
-        add(btnSenGetFil, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 47, 120, -1));
+        add(btnSenGetFil, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 20, 120, 20));
 
         txtResp.setBackground(new java.awt.Color(102, 102, 102));
         txtResp.setColumns(20);
@@ -130,11 +130,11 @@ public class panUploadFiles extends javax.swing.JPanel {
         txtResp.setRows(5);
         jScrollPane1.setViewportView(txtResp);
 
-        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 60, 488, 194));
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 50, 600, 190));
 
         jLabel4.setForeground(new java.awt.Color(228, 239, 22));
         jLabel4.setText("Response:");
-        add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 40, -1, -1));
+        add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, -1, -1));
 
         txtFile.setBackground(new java.awt.Color(102, 102, 102));
         txtFile.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -143,7 +143,7 @@ public class panUploadFiles extends javax.swing.JPanel {
 
         jLabel2.setForeground(new java.awt.Color(228, 239, 22));
         jLabel2.setText("File Type:");
-        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 84, 63, -1));
+        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 250, 60, -1));
 
         cmbFilTyp.setBackground(new java.awt.Color(102, 102, 102));
         cmbFilTyp.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -154,7 +154,7 @@ public class panUploadFiles extends javax.swing.JPanel {
                 cmbFilTypActionPerformed(evt);
             }
         });
-        add(cmbFilTyp, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 104, 129, -1));
+        add(cmbFilTyp, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 250, 160, -1));
 
         btnChoFile.setBackground(new java.awt.Color(0, 0, 0));
         btnChoFile.setForeground(new java.awt.Color(228, 239, 22));
@@ -195,7 +195,7 @@ public class panUploadFiles extends javax.swing.JPanel {
                 cmbLinesActionPerformed(evt);
             }
         });
-        add(cmbLines, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 310, 183, -1));
+        add(cmbLines, new org.netbeans.lib.awtextra.AbsoluteConstraints(113, 310, 180, -1));
 
         cmbProduct.setBackground(new java.awt.Color(102, 102, 102));
         cmbProduct.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -221,11 +221,11 @@ public class panUploadFiles extends javax.swing.JPanel {
         txtCheAlg.setBackground(new java.awt.Color(102, 102, 102));
         txtCheAlg.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         txtCheAlg.setForeground(new java.awt.Color(228, 239, 22));
-        add(txtCheAlg, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 340, 74, -1));
+        add(txtCheAlg, new org.netbeans.lib.awtextra.AbsoluteConstraints(114, 340, 80, -1));
 
         jLabel7.setForeground(new java.awt.Color(228, 239, 22));
         jLabel7.setText("Checksum Hex:");
-        add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 340, 100, -1));
+        add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 340, 100, -1));
 
         txtCheHex.setBackground(new java.awt.Color(102, 102, 102));
         txtCheHex.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -503,10 +503,10 @@ private void uploadFile (byte[]  byteArray, int intPos)
 
                     String strResp = stub.uploadFileChunk(this.txtApiKey.getText(), selectFile.getName().toString(),  byteArray, intPos);
                     if (strResp.indexOf("Error") <0){
-                        if(lastChunk)
+                        if(lastChunk){
                             connectToService(UPLOADCHUNKS);
-                        
-                        this.txtResp.setText(this.txtResp.getText() + "UploadFile: File " + selectFile.getName().toString() + " uploaded. \n");
+                            this.txtResp.setText(this.txtResp.getText() + "UploadFile: File " + selectFile.getName().toString() + " uploaded. \n");
+                        }
                     }
                 }
                 catch (RemoteException ex) {
@@ -539,7 +539,7 @@ private  String checksum(final String filepath, MessageDigest md) throws IOExcep
       for (final byte b : md.digest()) {
           result.append(String.format("%02x", b));
       }
-      this.txtResp.setText(this.txtResp.getText() + "The hex value of the file: " + this.txtFile.getText().toString() + " is: " + result.toString() + "  ");
+      this.txtResp.setText(this.txtResp.getText() + "Hex value: " + result.toString() + " \n");
       return result.toString();
   }
 
