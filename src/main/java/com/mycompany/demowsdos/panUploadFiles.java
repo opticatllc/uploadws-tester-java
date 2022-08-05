@@ -27,12 +27,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.FileOutputStream;
+import java.security.DigestInputStream;
+import java.security.MessageDigest;
 import java.util.List;
 
 import javax.swing.*;
@@ -51,10 +49,8 @@ public class panUploadFiles extends javax.swing.JPanel {
     //global vaiables
     File selectFile;
     List<ProductLine> lstProducts = new ArrayList<>();
-    
+    boolean lastChunk = false;
 
-    
-    
     //String[] strProLines = new String[100];
     //String[] strProFiles = new String[100];
     
@@ -99,7 +95,7 @@ public class panUploadFiles extends javax.swing.JPanel {
         cmbProduct = new javax.swing.JComboBox<>();
         btnSaave = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtCheAlg = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         txtCheHex = new javax.swing.JTextField();
         lblBacGro = new javax.swing.JLabel();
@@ -114,7 +110,7 @@ public class panUploadFiles extends javax.swing.JPanel {
         txtApiKey.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         txtApiKey.setForeground(new java.awt.Color(228, 239, 22));
         txtApiKey.setToolTipText("Enter your Api Key");
-        add(txtApiKey, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 16, 680, -1));
+        add(txtApiKey, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 16, 280, -1));
 
         btnSenGetFil.setBackground(new java.awt.Color(0, 0, 0));
         btnSenGetFil.setForeground(new java.awt.Color(228, 239, 22));
@@ -125,7 +121,7 @@ public class panUploadFiles extends javax.swing.JPanel {
                 btnSenGetFilActionPerformed(evt);
             }
         });
-        add(btnSenGetFil, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 47, 120, -1));
+        add(btnSenGetFil, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 20, 120, 20));
 
         txtResp.setBackground(new java.awt.Color(102, 102, 102));
         txtResp.setColumns(20);
@@ -134,11 +130,11 @@ public class panUploadFiles extends javax.swing.JPanel {
         txtResp.setRows(5);
         jScrollPane1.setViewportView(txtResp);
 
-        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 60, 488, 194));
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 50, 600, 190));
 
         jLabel4.setForeground(new java.awt.Color(228, 239, 22));
         jLabel4.setText("Response:");
-        add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 40, -1, -1));
+        add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, -1, -1));
 
         txtFile.setBackground(new java.awt.Color(102, 102, 102));
         txtFile.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -147,7 +143,7 @@ public class panUploadFiles extends javax.swing.JPanel {
 
         jLabel2.setForeground(new java.awt.Color(228, 239, 22));
         jLabel2.setText("File Type:");
-        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 84, 63, -1));
+        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 250, 60, -1));
 
         cmbFilTyp.setBackground(new java.awt.Color(102, 102, 102));
         cmbFilTyp.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -158,7 +154,7 @@ public class panUploadFiles extends javax.swing.JPanel {
                 cmbFilTypActionPerformed(evt);
             }
         });
-        add(cmbFilTyp, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 104, 129, -1));
+        add(cmbFilTyp, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 250, 160, -1));
 
         btnChoFile.setBackground(new java.awt.Color(0, 0, 0));
         btnChoFile.setForeground(new java.awt.Color(228, 239, 22));
@@ -199,7 +195,7 @@ public class panUploadFiles extends javax.swing.JPanel {
                 cmbLinesActionPerformed(evt);
             }
         });
-        add(cmbLines, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 310, 183, -1));
+        add(cmbLines, new org.netbeans.lib.awtextra.AbsoluteConstraints(113, 310, 180, -1));
 
         cmbProduct.setBackground(new java.awt.Color(102, 102, 102));
         cmbProduct.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -222,14 +218,14 @@ public class panUploadFiles extends javax.swing.JPanel {
         jLabel3.setText("Checksum algo:");
         add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 340, 90, -1));
 
-        jTextField1.setBackground(new java.awt.Color(102, 102, 102));
-        jTextField1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jTextField1.setForeground(new java.awt.Color(228, 239, 22));
-        add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 340, 74, -1));
+        txtCheAlg.setBackground(new java.awt.Color(102, 102, 102));
+        txtCheAlg.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        txtCheAlg.setForeground(new java.awt.Color(228, 239, 22));
+        add(txtCheAlg, new org.netbeans.lib.awtextra.AbsoluteConstraints(114, 340, 80, -1));
 
         jLabel7.setForeground(new java.awt.Color(228, 239, 22));
         jLabel7.setText("Checksum Hex:");
-        add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 340, 100, -1));
+        add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 340, 100, -1));
 
         txtCheHex.setBackground(new java.awt.Color(102, 102, 102));
         txtCheHex.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -239,39 +235,27 @@ public class panUploadFiles extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSenGetFilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSenGetFilActionPerformed
-     if(txtApiKey.getText().isEmpty()){
-         JOptionPane.showMessageDialog(this, "The Api Key is missing");
-         
-     }else{
-        this.txtResp.setText("Getting types... \n" );
-        connectToService(GETFILETYPES);
-     }
-         
-
-
+        if(txtApiKey.getText().isEmpty()){
+            JOptionPane.showMessageDialog(this, "The Api Key is missing");        
+        }else{
+           this.txtResp.setText("Getting types... \n" );
+           connectToService(GETFILETYPES);
+        }
     }//GEN-LAST:event_btnSenGetFilActionPerformed
 
     private void btnChoFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChoFileActionPerformed
-        
-       
         JFileChooser choFiler = new JFileChooser();
         int selection=choFiler.showOpenDialog(this);
-        //int selection=choFiler.APROVE_OPTION;
-        //choFiler.showOpenDialog(null);
-        
         if(selection==choFiler.APPROVE_OPTION){
             selectFile= choFiler.getSelectedFile();
             this.txtFile.setText(selectFile.getAbsolutePath());
             this.btnSaave.setEnabled(true);
-
         }
         else{
             this.txtFile.setText("");
             this.btnSaave.setEnabled(false);
 
         }
-        
-        
     }//GEN-LAST:event_btnChoFileActionPerformed
 
     private void cmbFilTypActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbFilTypActionPerformed
@@ -282,8 +266,7 @@ public class panUploadFiles extends javax.swing.JPanel {
         else
         {
             this.btnChoFile.setEnabled(false);
-        }
-        
+        } 
     }//GEN-LAST:event_cmbFilTypActionPerformed
 
     private void btnGetStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGetStatusActionPerformed
@@ -292,18 +275,14 @@ public class panUploadFiles extends javax.swing.JPanel {
             this.txtResp.setText(this.txtResp.getText() + "Getting status file, please wait ... \n" );
             connectToService(GETSTATUS);
             btnGetStatus.setEnabled(true);
-            
         }
     }//GEN-LAST:event_btnGetStatusActionPerformed
 
     private void cmbLinesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbLinesActionPerformed
-        
-        
         cmbProduct.removeAllItems();
         cmbProduct.addItem("-- Select product file --");
         int intCount =0;
-        for(ProductLine prod: lstProducts){
-            
+        for(ProductLine prod: lstProducts){        
             if (prod.getstrLine()==cmbLines.getSelectedItem())
             {
                 cmbProduct.addItem(prod.getstrFile());
@@ -311,9 +290,7 @@ public class panUploadFiles extends javax.swing.JPanel {
                     cmbFilTyp.setSelectedItem(prod.getstrFileTyp());
                 intCount++;
             }
-            
         } 
-        
     }//GEN-LAST:event_cmbLinesActionPerformed
 
     private void btnSaaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaaveActionPerformed
@@ -327,19 +304,17 @@ public class panUploadFiles extends javax.swing.JPanel {
             int intCurrPos = 0;
             //set position after read
             int intPos =0;
+            lastChunk =  false;
             try
             {        
-
-               
-               InputStream fr = new BufferedInputStream(new FileInputStream(selectFile));
-               //get file size  
-               int intLen = fr.available();
-               //int intLen = (int) selectFile.length(); 
-
+                InputStream fr = new BufferedInputStream(new FileInputStream(selectFile));
+                //get file size  
+                int intLen = fr.available();
                 while (intCurrPos<intLen) {
                     if (intLen<=bufferSize){
                         bufferSize = intLen;
                         byteArray = new byte[bufferSize];
+                        lastChunk =  true;
                     }
                     
                     //int intInp = fr.read();
@@ -348,23 +323,23 @@ public class panUploadFiles extends javax.swing.JPanel {
                         break;
                                        
                     uploadFile(byteArray, intCurrPos);       
-                    intCurrPos = intCurrPos + intPos;
-
+                    int newLen = intLen - (intPos + intCurrPos);
+                    if (newLen < bufferSize){
+                        bufferSize = newLen; 
+                        byteArray = new byte[bufferSize];
+                        lastChunk =  true;
+                    }
+                    intCurrPos +=  intPos;
                 }
-                    
                 fr.close();
-                
-               // JOptionPane.showMessageDialog(this, "el numero de vueltas que dio es: " + lnCount);
-
+                // JOptionPane.showMessageDialog(this, "el numero de vueltas que dio es: " + lnCount);
              } catch(IOException ex){
                 txtResp.setText(this.txtResp.getText() + ex.getMessage() + ".\n");
             }
-            
-
         }
     }//GEN-LAST:event_btnSaaveActionPerformed
 
-private void connectToService (int intServ){
+private void connectToService (int intServ) throws IOException{
     try {
         try {
             URL url = new URL("https://opticat1.net/OBWS/Service.svc");
@@ -387,8 +362,7 @@ private void connectToService (int intServ){
                             for (String strType : strFilTyp) {
                                 //fill cmbFilTyp
                                 cmbFilTyp.addItem(strType);
-                            }
-                            
+                            }                   
                             //managing controls
                             txtApiKey.setEditable(false);
                             btnSenGetFil.setEnabled(false);
@@ -401,23 +375,19 @@ private void connectToService (int intServ){
                         //fill lines
                        this.txtResp.setText(this.txtResp.getText() + "Gettin Lines ...\n");
                        Getproductfilesresponse responsePL;
-;
                        try {
                             responsePL = stub.getProductFiles(this.txtApiKey.getText());
                             String status = responsePL.getStatus() + ", " + responsePL.getErrormessage();
                             this.txtResp.setText(this.txtResp.getText() + "Status: " + status + "\n");
                             cmbLines.removeAllItems();
-                            cmbLines.addItem("-- Select Line --");
-                        
+                            cmbLines.addItem("-- Select Line --"); 
                             cmbProduct.removeAllItems();
                             cmbProduct.addItem("-- Select product file --");
-
                            // JOptionPane.showMessageDialog(this, strName);
                             for (GetproductfilesresponseProductline strLine : responsePL.getProductlines()) {
                                 //fill cmbLines
                                 cmbLines.addItem(strLine.getName());
                                 //strProLines[intLine]  =strLine.getName();
-                                
                                 for(GetproductfilesresponseProductlineProductfile strProd: strLine.getProductfiles()){
                                     //fill cmbProduct
                                     //strProFiles[intFile][2] = [strLine.getName()],[strProd.getValue()];
@@ -426,9 +396,7 @@ private void connectToService (int intServ){
                                     cmbProduct.addItem(strProd.getValue());
                                     //intFile++;
                                 }                                
-                            }     
-                            
-                            
+                            }       
                             this.txtResp.setText(this.txtResp.getText() + "To upload a file:\n");
                             this.txtResp.setText(this.txtResp.getText() + "  * Search and select the desired file\n");
                             this.txtResp.setText(this.txtResp.getText() + "  * Select the line and file of product\n");
@@ -455,14 +423,23 @@ private void connectToService (int intServ){
                             params.setFilename(selectFile.getName().toString());
                             params.setProductfile(this.cmbProduct.getSelectedItem().toString());
                             params.setProductline(this.cmbLines.getSelectedItem().toString());
-                            params.setChecksumalgo("");
-                            params.setChecksumhex("");
+                           if (txtCheAlg.getText().isEmpty())
+                                params.setChecksumalgo("");
+                            else
+                                params.setChecksumalgo(txtCheAlg.getText().toString());
+                            if (txtCheHex.getText().isEmpty())
+                                    params.setChecksumhex("");
+                            else
+                            {
+                                MessageDigest md = MessageDigest.getInstance("SHA-256");
+                                String hex = checksum(txtCheHex.getText().toString(), md);
+                                params.setChecksumhex(hex);
+                            }
                             responseUp = stub.saveUpload(params);
-                           
-                           String status = responseUp.getStatus() + ", " + responseUp.getErrormessage();
-                           this.txtResp.setText(this.txtResp.getText() + "Status: " + status + "\n");
-                           if(status.contains("Ok"))
-                               btnGetStatus.setEnabled(true);
+                            String status = responseUp.getStatus() + ", " + responseUp.getErrormessage();
+                            this.txtResp.setText(this.txtResp.getText() + "Status: " + status + "\n");
+                            if(status.contains("Ok"))
+                                btnGetStatus.setEnabled(true);
 
                         }
                         catch (RemoteException ex) {
@@ -482,19 +459,15 @@ private void connectToService (int intServ){
                             params.setProductfile(this.cmbProduct.getSelectedItem().toString());
                             params.setProductline(this.cmbLines.getSelectedItem().toString());
 
-                            responseSatatus = stub.getFileImportStatus(params);
-                            
-                            //responseMessage = responseSatatus.getImportmessages();
-                           
-                           String status = responseSatatus.getStatus() + ", " + responseSatatus.getErrormessage();
-                           if(status.indexOf("Error")>=0)
+                            responseSatatus = stub.getFileImportStatus(params);                          
+                            String status = responseSatatus.getStatus() + ", " + responseSatatus.getErrormessage();
+                            if(status.indexOf("Error")>=0)
                                 this.txtResp.setText(this.txtResp.getText() + "Status: " + status + "\n");
-                           else if(status.indexOf("Ok")>=0){
-                               this.txtResp.setText(this.txtResp.getText() + "File uploaded successfully, please check the status tab\n");
+                            else if(status.indexOf("Ok")>=0){
+                                this.txtResp.setText(this.txtResp.getText() + "File uploaded successfully, please check the status tab\n");
                                
-                               panFileStatus panStatus = new panFileStatus();
-                               panStatus.fillStatus(responseSatatus);
-                               
+                            panFileStatus panStatus = new panFileStatus();
+                            panStatus.fillStatus(responseSatatus);
                            }
                         }
                         catch (RemoteException ex) {
@@ -505,8 +478,7 @@ private void connectToService (int intServ){
                        break;
                    default:
                         this.txtResp.setText(this.txtResp.getText() + "Processing ...\n" );
-                        break;
-                        
+                        break;     
                }            
             }catch (MalformedURLException ex) {
                 Logger.getLogger(mainForm.class.getName()).log(Level.SEVERE, null, ex);
@@ -531,9 +503,10 @@ private void uploadFile (byte[]  byteArray, int intPos)
 
                     String strResp = stub.uploadFileChunk(this.txtApiKey.getText(), selectFile.getName().toString(),  byteArray, intPos);
                     if (strResp.indexOf("Error") <0){
-                        connectToService(UPLOADCHUNKS);
-                        this.txtResp.setText(this.txtResp.getText() + "UploadFile: File " + selectFile.getName().toString() + " uploaded. \n");
-                    
+                        if(lastChunk){
+                            connectToService(UPLOADCHUNKS);
+                            this.txtResp.setText(this.txtResp.getText() + "UploadFile: File " + selectFile.getName().toString() + " uploaded. \n");
+                        }
                     }
                 }
                 catch (RemoteException ex) {
@@ -549,9 +522,26 @@ private void uploadFile (byte[]  byteArray, int intPos)
         }catch (ServiceException  ex){
             this.txtResp.setText("Service error: " + ex.getMessage() );
     }
-
 }
 
+private  String checksum(final String filepath, MessageDigest md) throws IOException {
+
+      // file hashing with DigestInputStream
+      try (DigestInputStream dis = new DigestInputStream(new FileInputStream(filepath), md)) {
+          while (dis.read() != -1)
+			 {
+				; //empty loop to clear the data
+			}
+          md = dis.getMessageDigest();
+      }
+      // bytes to hex
+      final StringBuilder result = new StringBuilder();
+      for (final byte b : md.digest()) {
+          result.append(String.format("%02x", b));
+      }
+      this.txtResp.setText(this.txtResp.getText() + "Hex value: " + result.toString() + " \n");
+      return result.toString();
+  }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnChoFile;
@@ -569,9 +559,9 @@ private void uploadFile (byte[]  byteArray, int intPos)
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lblBacGro;
     private javax.swing.JTextField txtApiKey;
+    private javax.swing.JTextField txtCheAlg;
     private javax.swing.JTextField txtCheHex;
     private javax.swing.JTextField txtFile;
     private javax.swing.JTextArea txtResp;
