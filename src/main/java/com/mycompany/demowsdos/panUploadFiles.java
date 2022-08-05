@@ -249,6 +249,8 @@ public class panUploadFiles extends javax.swing.JPanel {
         if(selection==choFiler.APPROVE_OPTION){
             selectFile= choFiler.getSelectedFile();
             this.txtFile.setText(selectFile.getAbsolutePath());
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            String hex = checksum(selectFile.getAbsolutePath().toString(), md);
             this.btnSaave.setEnabled(true);
         }
         else{
@@ -296,7 +298,7 @@ public class panUploadFiles extends javax.swing.JPanel {
     private void btnSaaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaaveActionPerformed
         if (selectFile.isFile())
         {
-            this.txtResp.setText(this.txtResp.getText() + "Uploading file, please wait ... \n" );
+            this.txtResp.setText(this.txtResp.getText() + "Uploading file (UploadFileChunk), please wait ... \n" );
             //size for 4MB  
             int bufferSize = 4194304;
             byte[]  byteArray = new byte[bufferSize];
@@ -423,18 +425,16 @@ private void connectToService (int intServ) throws IOException{
                             params.setFilename(selectFile.getName().toString());
                             params.setProductfile(this.cmbProduct.getSelectedItem().toString());
                             params.setProductline(this.cmbLines.getSelectedItem().toString());
-                           if (txtCheAlg.getText().isEmpty())
+                            if (txtCheAlg.getText().isEmpty())
                                 params.setChecksumalgo("");
                             else
-                                params.setChecksumalgo(txtCheAlg.getText().toString());
+                                params.setChecksumalgo(txtCheAlg.getText());
+                           
                             if (txtCheHex.getText().isEmpty())
                                     params.setChecksumhex("");
                             else
-                            {
-                                MessageDigest md = MessageDigest.getInstance("SHA-256");
-                                String hex = checksum(txtCheHex.getText().toString(), md);
-                                params.setChecksumhex(hex);
-                            }
+                                params.setChecksumhex(txtCheHex.getText());
+                            
                             responseUp = stub.saveUpload(params);
                             String status = responseUp.getStatus() + ", " + responseUp.getErrormessage();
                             this.txtResp.setText(this.txtResp.getText() + "Status: " + status + "\n");
@@ -500,12 +500,11 @@ private void uploadFile (byte[]  byteArray, int intPos)
             if (! this.txtFile.getText().isEmpty()) 
             {
                 try {
-
                     String strResp = stub.uploadFileChunk(this.txtApiKey.getText(), selectFile.getName().toString(),  byteArray, intPos);
                     if (strResp.indexOf("Error") <0){
                         if(lastChunk){
                             connectToService(UPLOADCHUNKS);
-                            this.txtResp.setText(this.txtResp.getText() + "UploadFile: File " + selectFile.getName().toString() + " uploaded. \n");
+                            this.txtResp.setText(this.txtResp.getText() + "UploadFile: File " + selectFile.getName().toString() + " was uploaded. \n");
                         }
                     }
                 }
@@ -539,7 +538,9 @@ private  String checksum(final String filepath, MessageDigest md) throws IOExcep
       for (final byte b : md.digest()) {
           result.append(String.format("%02x", b));
       }
+      this.txtResp.setText(this.txtResp.getText() + "Gettinn checksum hex \n");
       this.txtResp.setText(this.txtResp.getText() + "Hex value: " + result.toString() + " \n");
+      this.txtResp.setText(this.txtResp.getText() + "Please, copy and paste it into the checksum hex field, if you want to use the checksum algorithm \n");
       return result.toString();
   }
 
