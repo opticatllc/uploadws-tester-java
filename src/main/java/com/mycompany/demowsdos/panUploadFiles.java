@@ -538,7 +538,7 @@ private  String checksum(final String filepath, MessageDigest md) throws IOExcep
       for (final byte b : md.digest()) {
           result.append(String.format("%02x", b));
       }
-      this.txtResp.setText(this.txtResp.getText() + "Gettinn checksum hex \n");
+      this.txtResp.setText(this.txtResp.getText() + "Getting checksum hex \n");
       this.txtResp.setText(this.txtResp.getText() + "Hex value: " + result.toString() + " \n");
       this.txtResp.setText(this.txtResp.getText() + "Please, copy and paste it into the checksum hex field, if you want to use the checksum algorithm \n");
       return result.toString();
