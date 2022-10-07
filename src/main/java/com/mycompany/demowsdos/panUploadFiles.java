@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import javax.swing.*;
@@ -239,7 +240,11 @@ public class panUploadFiles extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "The Api Key is missing");        
         }else{
            this.txtResp.setText("Getting types... \n" );
-           connectToService(GETFILETYPES);
+            try {
+                connectToService(GETFILETYPES);
+            } catch (IOException ex) {
+                Logger.getLogger(panUploadFiles.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_btnSenGetFilActionPerformed
 
@@ -247,11 +252,19 @@ public class panUploadFiles extends javax.swing.JPanel {
         JFileChooser choFiler = new JFileChooser();
         int selection=choFiler.showOpenDialog(this);
         if(selection==choFiler.APPROVE_OPTION){
-            selectFile= choFiler.getSelectedFile();
-            this.txtFile.setText(selectFile.getAbsolutePath());
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            String hex = checksum(selectFile.getAbsolutePath().toString(), md);
-            this.btnSaave.setEnabled(true);
+            try {
+                selectFile= choFiler.getSelectedFile();
+                this.txtFile.setText(selectFile.getAbsolutePath());
+                MessageDigest md = MessageDigest.getInstance("SHA-256");
+                try {
+                    String hex = checksum(selectFile.getAbsolutePath().toString(), md);
+                } catch (IOException ex) {
+                    Logger.getLogger(panUploadFiles.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                this.btnSaave.setEnabled(true);
+            } catch (NoSuchAlgorithmException ex) {
+                Logger.getLogger(panUploadFiles.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         else{
             this.txtFile.setText("");
@@ -274,9 +287,13 @@ public class panUploadFiles extends javax.swing.JPanel {
     private void btnGetStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGetStatusActionPerformed
         if (selectFile.isFile())
         {
-            this.txtResp.setText(this.txtResp.getText() + "Getting status file, please wait ... \n" );
-            connectToService(GETSTATUS);
-            btnGetStatus.setEnabled(true);
+            try {
+                this.txtResp.setText(this.txtResp.getText() + "Getting status file, please wait ... \n" );
+                connectToService(GETSTATUS);
+                btnGetStatus.setEnabled(true);
+            } catch (IOException ex) {
+                Logger.getLogger(panUploadFiles.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_btnGetStatusActionPerformed
 
@@ -503,7 +520,11 @@ private void uploadFile (byte[]  byteArray, int intPos)
                     String strResp = stub.uploadFileChunk(this.txtApiKey.getText(), selectFile.getName().toString(),  byteArray, intPos);
                     if (strResp.indexOf("Error") <0){
                         if(lastChunk){
-                            connectToService(UPLOADCHUNKS);
+                            try {
+                                connectToService(UPLOADCHUNKS);
+                            } catch (IOException ex) {
+                                Logger.getLogger(panUploadFiles.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                             this.txtResp.setText(this.txtResp.getText() + "UploadFile: File " + selectFile.getName().toString() + " was uploaded. \n");
                         }
                     }
