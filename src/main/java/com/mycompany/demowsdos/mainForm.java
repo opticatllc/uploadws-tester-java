@@ -37,7 +37,6 @@ public class mainForm extends javax.swing.JFrame {
     @Override
     public Image getIconImage(){
         Image retValue = Toolkit.getDefaultToolkit().getImage("src\\main\\java\\Miselaneous\\optiCat.png");
-        //Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("Miselaneous/optiCat.png"));
         //Before asign the new icon, we have to set up the "iconImage" property to "Value from existing component"
         //choosing the option "Property" to establish  it as "iconImage"
         return retValue;
