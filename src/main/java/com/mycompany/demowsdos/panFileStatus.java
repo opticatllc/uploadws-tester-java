@@ -97,6 +97,7 @@ public class panFileStatus extends javax.swing.JPanel {
         tblStatus = new javax.swing.JTable();
         lblBacGro = new javax.swing.JLabel();
 
+        setBackground(new java.awt.Color(0, 0, 0));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel3.setBackground(new java.awt.Color(0, 0, 0));
