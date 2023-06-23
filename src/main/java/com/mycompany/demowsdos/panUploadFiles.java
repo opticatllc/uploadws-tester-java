@@ -101,6 +101,7 @@ public class panUploadFiles extends javax.swing.JPanel {
         txtCheHex = new javax.swing.JTextField();
         lblBacGro = new javax.swing.JLabel();
 
+        setBackground(new java.awt.Color(0, 0, 0));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setForeground(new java.awt.Color(228, 239, 22));
@@ -232,6 +233,8 @@ public class panUploadFiles extends javax.swing.JPanel {
         txtCheHex.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         txtCheHex.setForeground(new java.awt.Color(228, 239, 22));
         add(txtCheHex, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 340, 348, -1));
+
+        lblBacGro.setBackground(new java.awt.Color(0, 0, 0));
         add(lblBacGro, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 730, 420));
     }// </editor-fold>//GEN-END:initComponents
 
@@ -364,7 +367,8 @@ public class panUploadFiles extends javax.swing.JPanel {
 private void connectToService (int intServ) throws IOException{
     try {
         try {
-            URL url = new URL("https://opticat1.net/OBWS/Service.svc");
+            //URL url = new URL("https://opticat1.net/OBWS/Service.svc");
+            URL url = new URL("https://opticatnetwork.com/OBAPI_1_2/Service.svc");
             ServiceLocator sl = new ServiceLocator();
             sl.getBasicHttpBinding_IService(url);
             BasicHttpBinding_IServiceStub stub = (BasicHttpBinding_IServiceStub) sl.getBasicHttpBinding_IService(url);
@@ -514,7 +518,8 @@ private void uploadFile (byte[]  byteArray, long intPos)
     try{   
         try{
             ServiceLocator sl = new ServiceLocator();
-            URL url = new URL("https://opticat1.net/OBWS/Service.svc");
+            //URL url = new URL("https://opticat1.net/OBWS/Service.svc");
+            URL url = new URL("https://opticatnetwork.com/OBAPI_1_2/Service.svc");
             sl.getBasicHttpBinding_IService(url);
             BasicHttpBinding_IServiceStub stub = (BasicHttpBinding_IServiceStub) sl.getBasicHttpBinding_IService(url);
             if (! this.txtFile.getText().isEmpty()) 

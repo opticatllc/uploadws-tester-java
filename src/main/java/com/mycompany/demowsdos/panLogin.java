@@ -59,6 +59,7 @@ public class panLogin extends javax.swing.JPanel {
         jLabel4 = new javax.swing.JLabel();
         lblBacGro = new javax.swing.JLabel();
 
+        setBackground(new java.awt.Color(0, 0, 0));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         txtUser.setBackground(new java.awt.Color(102, 102, 102));
@@ -171,7 +172,9 @@ public class panLogin extends javax.swing.JPanel {
     private void connectToService(int intServ) {
         try {
             try {
-                URL url = new URL("https://opticat1.net/OBWS/Service.svc");
+                
+                //URL url = new URL("https://opticat1.net/OBWS/Service.svc");
+                URL url = new URL("https://opticatnetwork.com/OBAPI_1_2/Service.svc");
                 ServiceLocator sl = new ServiceLocator();
                 sl.getBasicHttpBinding_IService(url);
                 BasicHttpBinding_IServiceStub stub = (BasicHttpBinding_IServiceStub) sl.getBasicHttpBinding_IService(url);
