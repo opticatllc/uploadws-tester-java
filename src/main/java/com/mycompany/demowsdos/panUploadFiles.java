@@ -367,8 +367,8 @@ public class panUploadFiles extends javax.swing.JPanel {
 private void connectToService (int intServ) throws IOException{
     try {
         try {
-            //URL url = new URL("https://opticat1.net/OBWS/Service.svc");
-            URL url = new URL("https://opticatnetwork.com/OBAPI_1_2/Service.svc");
+            URL url = new URL("https://opticat1.net/OBWS/Service.svc");
+           // URL url = new URL("https://opticatnetwork.com/OBAPI_1_2/Service.svc");
             ServiceLocator sl = new ServiceLocator();
             sl.getBasicHttpBinding_IService(url);
             BasicHttpBinding_IServiceStub stub = (BasicHttpBinding_IServiceStub) sl.getBasicHttpBinding_IService(url);
@@ -518,8 +518,8 @@ private void uploadFile (byte[]  byteArray, long intPos)
     try{   
         try{
             ServiceLocator sl = new ServiceLocator();
-            //URL url = new URL("https://opticat1.net/OBWS/Service.svc");
-            URL url = new URL("https://opticatnetwork.com/OBAPI_1_2/Service.svc");
+            URL url = new URL("https://opticat1.net/OBWS/Service.svc");
+           // URL url = new URL("https://opticatnetwork.com/OBAPI_1_2/Service.svc");
             sl.getBasicHttpBinding_IService(url);
             BasicHttpBinding_IServiceStub stub = (BasicHttpBinding_IServiceStub) sl.getBasicHttpBinding_IService(url);
             if (! this.txtFile.getText().isEmpty()) 
