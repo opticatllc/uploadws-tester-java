@@ -22,7 +22,7 @@ public class ServiceLocator extends org.apache.axis.client.Service implements co
     }
 
     // Use to get a proxy class for BasicHttpBinding_IService
-    private java.lang.String BasicHttpBinding_IService_address = "https://opticat1.net/OBWS/Service.svc";
+    private java.lang.String BasicHttpBinding_IService_address = "https://www.opticat1.net/OBWS/Service.svc";
 
     public java.lang.String getBasicHttpBinding_IServiceAddress() {
         return BasicHttpBinding_IService_address;
