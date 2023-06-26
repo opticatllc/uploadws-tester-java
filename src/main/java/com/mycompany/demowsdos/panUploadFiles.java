@@ -367,13 +367,9 @@ public class panUploadFiles extends javax.swing.JPanel {
 private void connectToService (int intServ) throws IOException{
     try {
         try {
-<<<<<<< HEAD
-            URL url = new URL("https://opticat1.net/OBWS/Service.svc");
-            //URL url = new URL("https://opticatnetwork.com/OBAPI_1_2/Service.svc");
-=======
             //URL url = new URL("https://opticat1.net/OBWS/Service.svc");
             URL url = new URL("https://opticatnetwork.com/OBAPI_1_2/Service.svc");
->>>>>>> 0e6bd1bbfd22d5ec829bf7b2bce6ad6b85c97f7c
+
             ServiceLocator sl = new ServiceLocator();
             sl.getBasicHttpBinding_IService(url);
             BasicHttpBinding_IServiceStub stub = (BasicHttpBinding_IServiceStub) sl.getBasicHttpBinding_IService(url);
@@ -523,13 +519,8 @@ private void uploadFile (byte[]  byteArray, long intPos)
     try{   
         try{
             ServiceLocator sl = new ServiceLocator();
-<<<<<<< HEAD
-            URL url = new URL("https://opticat1.net/OBWS/Service.svc");
-            //URL url = new URL("https://opticatnetwork.com/OBAPI_1_2/Service.svc");
-=======
             //URL url = new URL("https://opticat1.net/OBWS/Service.svc");
             URL url = new URL("https://opticatnetwork.com/OBAPI_1_2/Service.svc");
->>>>>>> 0e6bd1bbfd22d5ec829bf7b2bce6ad6b85c97f7c
             sl.getBasicHttpBinding_IService(url);
             BasicHttpBinding_IServiceStub stub = (BasicHttpBinding_IServiceStub) sl.getBasicHttpBinding_IService(url);
             if (! this.txtFile.getText().isEmpty()) 
