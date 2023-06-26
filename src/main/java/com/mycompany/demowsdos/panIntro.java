@@ -55,6 +55,11 @@ public class panIntro extends javax.swing.JPanel {
         jScrollPane1.setViewportView(txtIntro);
 
         add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, 450, 290));
+<<<<<<< HEAD
+=======
+
+        lblBacGro.setBackground(new java.awt.Color(0, 0, 0));
+>>>>>>> 0e6bd1bbfd22d5ec829bf7b2bce6ad6b85c97f7c
         add(lblBacGro, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 710, 420));
     }// </editor-fold>//GEN-END:initComponents
 
@@ -82,16 +87,16 @@ public class panIntro extends javax.swing.JPanel {
           this.txtIntro.setText(this.txtIntro.getText() + "This app aims to consume Opticat webservices\n");
           this.txtIntro.setText(this.txtIntro.getText() + "using a Java client\n\n");
           this.txtIntro.setText(this.txtIntro.getText() + "Functionallity:\n\n");
-          this.txtIntro.setText(this.txtIntro.getText() + "* Get type Files using your Api Key\n");
-          this.txtIntro.setText(this.txtIntro.getText() + "* Upload a file for a Product and Product Line\n");
-          this.txtIntro.setText(this.txtIntro.getText() + "* Check the status of the file uploaded\n");
+          this.txtIntro.setText(this.txtIntro.getText() + "* Using your Api Key\n");
+          this.txtIntro.setText(this.txtIntro.getText() + "*   Get type Files\n");
+          this.txtIntro.setText(this.txtIntro.getText() + "*   Upload a file for a Product and Product Line\n");
+          this.txtIntro.setText(this.txtIntro.getText() + "*   Check the status of the file uploaded\n");
           this.txtIntro.setText(this.txtIntro.getText() + "* Logout to disable your Api Key\n");
-                    this.txtIntro.setText(this.txtIntro.getText() + "* Login to get a new Api Key\n\n");
-          this.txtIntro.setText(this.txtIntro.getText() + "Note: For both is necessary enter your Api Key\n");
-          
+          this.txtIntro.setText(this.txtIntro.getText() + "* Login to get a new Api Key\n\n");
+      
           this.txtIntro.setEditable(false);         
         }catch(Exception ex){
-            JOptionPane.showMessageDialog(this, "Ocurrio el siguiente error: " + ex.getMessage());
+            JOptionPane.showMessageDialog(this, "The following error occurred: " + ex.getMessage());
         }
         
 
