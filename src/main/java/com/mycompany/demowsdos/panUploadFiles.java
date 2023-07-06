@@ -51,7 +51,7 @@ public class panUploadFiles extends javax.swing.JPanel {
     File selectFile;
     List<ProductLine> lstProducts = new ArrayList<>();
     boolean lastChunk = false;
-
+    long lpos = 0;
     //String[] strProLines = new String[100];
     //String[] strProFiles = new String[100];
     
@@ -260,7 +260,7 @@ public class panUploadFiles extends javax.swing.JPanel {
                 this.txtFile.setText(selectFile.getAbsolutePath());
                 MessageDigest md = MessageDigest.getInstance("SHA-256");
                 try {
-                    if(selectFile.length() < 2147483647){
+                    if(selectFile.length() < 1073741823){
                         String hex = checksum(selectFile.getAbsolutePath().toString(), md);
                     }
                 } catch (IOException ex) {
@@ -349,6 +349,7 @@ public class panUploadFiles extends javax.swing.JPanel {
                                        
                     uploadFile(byteArray, intCurrPos);       
                     long newLen = intLen - (intPos + intCurrPos);
+                    lpos = newLen;
                     if (newLen < bufferSize){
                         bufferSize = (int)newLen; 
                         byteArray = new byte[bufferSize];
@@ -359,7 +360,7 @@ public class panUploadFiles extends javax.swing.JPanel {
                 fr.close();
                 // JOptionPane.showMessageDialog(this, "el numero de vueltas que dio es: " + lnCount);
              } catch(IOException ex){
-                txtResp.setText(this.txtResp.getText() + ex.getMessage() + ".\n");
+                txtResp.setText(this.txtResp.getText() + ex.getMessage() + lpos +".\n");
             }
         }
     }//GEN-LAST:event_btnSaveActionPerformed
@@ -370,8 +371,12 @@ private void connectToService (int intServ) throws IOException{
             //URL url = new URL("https://opticat1.net/OBWS/Service.svc");
             URL url = new URL("https://opticatnetwork.com/OBAPI_1_2/Service.svc");
 
+            //System.getProperties().put("socksProxyHost", "127.0.0.1");
+            //System.getProperties().put("socksProxyPort", "80");
+            
             ServiceLocator sl = new ServiceLocator();
             sl.getBasicHttpBinding_IService(url);
+            
             BasicHttpBinding_IServiceStub stub = (BasicHttpBinding_IServiceStub) sl.getBasicHttpBinding_IService(url);
             
                switch (intServ)
@@ -521,6 +526,10 @@ private void uploadFile (byte[]  byteArray, long intPos)
             ServiceLocator sl = new ServiceLocator();
             //URL url = new URL("https://opticat1.net/OBWS/Service.svc");
             URL url = new URL("https://opticatnetwork.com/OBAPI_1_2/Service.svc");
+            
+           // System.getProperties().put("socksProxyHost", "127.0.0.1");
+           // System.getProperties().put("socksProxyPort", "80");
+
             sl.getBasicHttpBinding_IService(url);
             BasicHttpBinding_IServiceStub stub = (BasicHttpBinding_IServiceStub) sl.getBasicHttpBinding_IService(url);
             if (! this.txtFile.getText().isEmpty()) 
@@ -539,28 +548,34 @@ private void uploadFile (byte[]  byteArray, long intPos)
                     }
                 }
                 catch (RemoteException ex) {
-                    Logger.getLogger(mainForm.class.getName()).log(Level.SEVERE, null, ex);
-                    this.txtResp.setText("Service error: " + ex.getMessage() );
+                     if(ex.getMessage().indexOf("java.net.ConnectException: Connection timed out: connect")!=-1)
+                    {
+                       uploadFile (byteArray, intPos);
+                    }
+                    else{
+                        Logger.getLogger(mainForm.class.getName()).log(Level.SEVERE, null, ex);
+                        this.txtResp.setText("Service error: " + ex.getMessage());
+                    }
                 }
             }
         }
             catch (MalformedURLException ex) {
                 Logger.getLogger(mainForm.class.getName()).log(Level.SEVERE, null, ex);
-                this.txtResp.setText("Service error: " + ex.getMessage() );
+                this.txtResp.setText("Service error: " + ex.getMessage());
             }
         }catch (ServiceException  ex){
-            this.txtResp.setText("Service error: " + ex.getMessage() );
+            this.txtResp.setText("Service error: " + ex.getMessage());
     }
 }
 
 private  String checksum(final String filepath, MessageDigest md) throws IOException {
-
+        this.txtResp.setText("Getting Check sum hex \n");
       // file hashing with DigestInputStream
       try (DigestInputStream dis = new DigestInputStream(new FileInputStream(filepath), md)) {
-          while (dis.read() != -1)
-			 {
+          //while (dis.read() != -1)
+			// {
 				; //empty loop to clear the data
-			}
+			//}
           md = dis.getMessageDigest();
       }
       // bytes to hex
@@ -568,7 +583,7 @@ private  String checksum(final String filepath, MessageDigest md) throws IOExcep
       for (final byte b : md.digest()) {
           result.append(String.format("%02x", b));
       }
-      this.txtResp.setText(this.txtResp.getText() + "Getting checksum hex \n");
+      //this.txtResp.setText(this.txtResp.getText() + "Getting checksum hex \n");
       this.txtResp.setText(this.txtResp.getText() + "Hex value: " + result.toString() + " \n");
       this.txtResp.setText(this.txtResp.getText() + "Please, copy and paste it into the checksum hex field, if you want to use the checksum algorithm \n");
       return result.toString();
