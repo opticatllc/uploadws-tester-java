@@ -51,7 +51,7 @@ public class panUploadFiles extends javax.swing.JPanel {
     File selectFile;
     List<ProductLine> lstProducts = new ArrayList<>();
     boolean lastChunk = false;
-
+    long lpos = 0;
     //String[] strProLines = new String[100];
     //String[] strProFiles = new String[100];
     
@@ -64,7 +64,7 @@ public class panUploadFiles extends javax.swing.JPanel {
         this.btnChoFile.setEnabled(false);
         this.btnGetStatus.setEnabled(false);
         this.txtFile.setEditable(false);
-        this.btnSaave.setEnabled(false);
+        this.btnSave.setEnabled(false);
         ImageIcon icon=new ImageIcon("src\\main\\java\\Miselaneous\\jaguar2.jpg");
         lblBacGro.setIcon(icon);
        
@@ -94,7 +94,7 @@ public class panUploadFiles extends javax.swing.JPanel {
         jLabel6 = new javax.swing.JLabel();
         cmbLines = new javax.swing.JComboBox<>();
         cmbProduct = new javax.swing.JComboBox<>();
-        btnSaave = new javax.swing.JButton();
+        btnSave = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         txtCheAlg = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
@@ -205,16 +205,16 @@ public class panUploadFiles extends javax.swing.JPanel {
         cmbProduct.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         add(cmbProduct, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 310, 202, -1));
 
-        btnSaave.setBackground(new java.awt.Color(0, 0, 0));
-        btnSaave.setForeground(new java.awt.Color(228, 239, 22));
-        btnSaave.setText("Upload file ..");
-        btnSaave.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnSaave.addActionListener(new java.awt.event.ActionListener() {
+        btnSave.setBackground(new java.awt.Color(0, 0, 0));
+        btnSave.setForeground(new java.awt.Color(228, 239, 22));
+        btnSave.setText("Upload file ..");
+        btnSave.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSaaveActionPerformed(evt);
+                btnSaveActionPerformed(evt);
             }
         });
-        add(btnSaave, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 280, -1, -1));
+        add(btnSave, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 280, -1, -1));
 
         jLabel3.setForeground(new java.awt.Color(228, 239, 22));
         jLabel3.setText("Checksum algo:");
@@ -260,18 +260,20 @@ public class panUploadFiles extends javax.swing.JPanel {
                 this.txtFile.setText(selectFile.getAbsolutePath());
                 MessageDigest md = MessageDigest.getInstance("SHA-256");
                 try {
-                    String hex = checksum(selectFile.getAbsolutePath().toString(), md);
+                    if(selectFile.length() < 1073741823){
+                        String hex = checksum(selectFile.getAbsolutePath().toString(), md);
+                    }
                 } catch (IOException ex) {
                     Logger.getLogger(panUploadFiles.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                this.btnSaave.setEnabled(true);
+                this.btnSave.setEnabled(true);
             } catch (NoSuchAlgorithmException ex) {
                 Logger.getLogger(panUploadFiles.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         else{
             this.txtFile.setText("");
-            this.btnSaave.setEnabled(false);
+            this.btnSave.setEnabled(false);
 
         }
     }//GEN-LAST:event_btnChoFileActionPerformed
@@ -315,7 +317,7 @@ public class panUploadFiles extends javax.swing.JPanel {
         } 
     }//GEN-LAST:event_cmbLinesActionPerformed
 
-    private void btnSaaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaaveActionPerformed
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         if (selectFile.isFile())
         {
             this.txtResp.setText(this.txtResp.getText() + "Uploading file (UploadFileChunk), please wait ... \n" );
@@ -323,18 +325,19 @@ public class panUploadFiles extends javax.swing.JPanel {
             int bufferSize = 4194304;
             byte[]  byteArray = new byte[bufferSize];
             //set current position
-            int intCurrPos = 0;
+            long intCurrPos = 0;
             //set position after read
-            int intPos =0;
+            long intPos =0;
             lastChunk =  false;
             try
             {        
                 InputStream fr = new BufferedInputStream(new FileInputStream(selectFile));
                 //get file size  
-                int intLen = fr.available();
+                //long intLen = fr.available();
+                long intLen = selectFile.length();
                 while (intCurrPos<intLen) {
                     if (intLen<=bufferSize){
-                        bufferSize = intLen;
+                        bufferSize = (int)intLen;
                         byteArray = new byte[bufferSize];
                         lastChunk =  true;
                     }
@@ -345,9 +348,10 @@ public class panUploadFiles extends javax.swing.JPanel {
                         break;
                                        
                     uploadFile(byteArray, intCurrPos);       
-                    int newLen = intLen - (intPos + intCurrPos);
+                    long newLen = intLen - (intPos + intCurrPos);
+                    lpos = newLen;
                     if (newLen < bufferSize){
-                        bufferSize = newLen; 
+                        bufferSize = (int)newLen; 
                         byteArray = new byte[bufferSize];
                         lastChunk =  true;
                     }
@@ -356,18 +360,23 @@ public class panUploadFiles extends javax.swing.JPanel {
                 fr.close();
                 // JOptionPane.showMessageDialog(this, "el numero de vueltas que dio es: " + lnCount);
              } catch(IOException ex){
-                txtResp.setText(this.txtResp.getText() + ex.getMessage() + ".\n");
+                txtResp.setText(this.txtResp.getText() + ex.getMessage() + lpos +".\n");
             }
         }
-    }//GEN-LAST:event_btnSaaveActionPerformed
+    }//GEN-LAST:event_btnSaveActionPerformed
 
 private void connectToService (int intServ) throws IOException{
     try {
         try {
             //URL url = new URL("https://opticat1.net/OBWS/Service.svc");
             URL url = new URL("https://opticatnetwork.com/OBAPI_1_2/Service.svc");
+
+            //System.getProperties().put("socksProxyHost", "127.0.0.1");
+            //System.getProperties().put("socksProxyPort", "80");
+            
             ServiceLocator sl = new ServiceLocator();
             sl.getBasicHttpBinding_IService(url);
+            
             BasicHttpBinding_IServiceStub stub = (BasicHttpBinding_IServiceStub) sl.getBasicHttpBinding_IService(url);
             
                switch (intServ)
@@ -510,13 +519,17 @@ private void connectToService (int intServ) throws IOException{
         }
 }
  
-private void uploadFile (byte[]  byteArray, int intPos)
+private void uploadFile (byte[]  byteArray, long intPos)
 {
     try{   
         try{
             ServiceLocator sl = new ServiceLocator();
             //URL url = new URL("https://opticat1.net/OBWS/Service.svc");
             URL url = new URL("https://opticatnetwork.com/OBAPI_1_2/Service.svc");
+            
+           // System.getProperties().put("socksProxyHost", "127.0.0.1");
+           // System.getProperties().put("socksProxyPort", "80");
+
             sl.getBasicHttpBinding_IService(url);
             BasicHttpBinding_IServiceStub stub = (BasicHttpBinding_IServiceStub) sl.getBasicHttpBinding_IService(url);
             if (! this.txtFile.getText().isEmpty()) 
@@ -535,28 +548,34 @@ private void uploadFile (byte[]  byteArray, int intPos)
                     }
                 }
                 catch (RemoteException ex) {
-                    Logger.getLogger(mainForm.class.getName()).log(Level.SEVERE, null, ex);
-                    this.txtResp.setText("Service error: " + ex.getMessage() );
+                     if(ex.getMessage().indexOf("java.net.ConnectException: Connection timed out: connect")!=-1)
+                    {
+                       uploadFile (byteArray, intPos);
+                    }
+                    else{
+                        Logger.getLogger(mainForm.class.getName()).log(Level.SEVERE, null, ex);
+                        this.txtResp.setText("Service error: " + ex.getMessage());
+                    }
                 }
             }
         }
             catch (MalformedURLException ex) {
                 Logger.getLogger(mainForm.class.getName()).log(Level.SEVERE, null, ex);
-                this.txtResp.setText("Service error: " + ex.getMessage() );
+                this.txtResp.setText("Service error: " + ex.getMessage());
             }
         }catch (ServiceException  ex){
-            this.txtResp.setText("Service error: " + ex.getMessage() );
+            this.txtResp.setText("Service error: " + ex.getMessage());
     }
 }
 
 private  String checksum(final String filepath, MessageDigest md) throws IOException {
-
+        this.txtResp.setText("Getting Check sum hex \n");
       // file hashing with DigestInputStream
       try (DigestInputStream dis = new DigestInputStream(new FileInputStream(filepath), md)) {
-          while (dis.read() != -1)
-			 {
+          //while (dis.read() != -1)
+			// {
 				; //empty loop to clear the data
-			}
+			//}
           md = dis.getMessageDigest();
       }
       // bytes to hex
@@ -564,7 +583,7 @@ private  String checksum(final String filepath, MessageDigest md) throws IOExcep
       for (final byte b : md.digest()) {
           result.append(String.format("%02x", b));
       }
-      this.txtResp.setText(this.txtResp.getText() + "Getting checksum hex \n");
+      //this.txtResp.setText(this.txtResp.getText() + "Getting checksum hex \n");
       this.txtResp.setText(this.txtResp.getText() + "Hex value: " + result.toString() + " \n");
       this.txtResp.setText(this.txtResp.getText() + "Please, copy and paste it into the checksum hex field, if you want to use the checksum algorithm \n");
       return result.toString();
@@ -573,7 +592,7 @@ private  String checksum(final String filepath, MessageDigest md) throws IOExcep
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnChoFile;
     private javax.swing.JButton btnGetStatus;
-    private javax.swing.JButton btnSaave;
+    private javax.swing.JButton btnSave;
     private javax.swing.JButton btnSenGetFil;
     private javax.swing.JComboBox<String> cmbFilTyp;
     private javax.swing.JComboBox<String> cmbLines;

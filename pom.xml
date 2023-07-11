@@ -14,8 +14,8 @@
 				<version>1.4</version>
 				<configuration>
 					<urls>
-						<url>http://opticat1.net/OBWS/Service.svc?wsdl</url>
-
+						<!--<url>http://opticat1.net/OBWS/Service.svc?wsdl</url>-->
+                                                <url>http://opticatnetwork.com/OBAPI_1_2/Service.svc?wsdl</url>
 					</urls>
 					<packageSpace>com.company.wsdl</packageSpace>
 					<testCases>true</testCases>
@@ -23,8 +23,9 @@
 					<subPackageByFileName>true</subPackageByFileName>
 
 					<useEmitter>true</useEmitter>
-					<namespaceToPackage>https://opticat1.net/OBWS/Service.svc=com.mywebservice</namespaceToPackage> 
-                                         <!--<namespaceToPackage>https://87306-oc1beta.oc1beta.internal/OBWS/Service.svc=com.mywebservice</namespaceToPackage> -->
+                                            <namespaceToPackage>https://opticatnetwork.com/OBAPI_1_2/Service.svc=com.mywebservice</namespaceToPackage>
+					<!--<namespaceToPackage>https://opticat1.net/OBWS/Service.svc=com.mywebservice</namespaceToPackage> 
+                                         <namespaceToPackage>https://87306-oc1beta.oc1beta.internal/OBWS/Service.svc=com.mywebservice</namespaceToPackage> -->
 				</configuration>
 				<executions>
 					<execution>

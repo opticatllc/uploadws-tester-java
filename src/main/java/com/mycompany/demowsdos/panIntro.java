@@ -55,8 +55,6 @@ public class panIntro extends javax.swing.JPanel {
         jScrollPane1.setViewportView(txtIntro);
 
         add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, 450, 290));
-
-        lblBacGro.setBackground(new java.awt.Color(0, 0, 0));
         add(lblBacGro, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 710, 420));
     }// </editor-fold>//GEN-END:initComponents
 
