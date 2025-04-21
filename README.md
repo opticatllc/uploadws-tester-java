@@ -31,3 +31,9 @@ The example shown above is for switching to the production server
 Dependencies:
 
 ![javaDependencies](https://user-images.githubusercontent.com/88451423/133518263-a09a4a33-bf13-4a5d-bdf2-6feae8d56608.png)
+
+### Link for OnBoard API Web Services Manual Live:
+https://docs.google.com/document/d/1XfvUCbLNSWCUcGYE8NHn2Sw_MnqM5BrplByd1WNt-Vk/edit?usp=sharing
+
+### Link for OnBoard API Web Services Manual PDF Download:
+https://docs.google.com/document/d/1XfvUCbLNSWCUcGYE8NHn2Sw_MnqM5BrplByd1WNt-Vk/export?format=pdf
