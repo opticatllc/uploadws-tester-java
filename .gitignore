@@ -1,0 +1,78 @@
+# ======================
+# Maven
+# ======================
+/target/
+!.mvn/wrapper/maven-wrapper.jar
+.mvn/timing.properties
+
+# Maven log & debug output
+mvn-debug.log
+
+# Generated files by plugins
+dependency-reduced-pom.xml
+release.properties
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+*.versionsBackup
+
+# ======================
+# Java
+# ======================
+*.class
+*.jar
+*.war
+*.ear
+*.log
+
+# Compiled class files
+**/bin/
+**/out/
+
+# ======================
+# IntelliJ IDEA
+# ======================
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# ======================
+# Eclipse
+# ======================
+.project
+.classpath
+.settings/
+*.launch
+*.tmp
+*.bak
+*.swp
+
+# ======================
+# VS Code
+# ======================
+.vscode/
+
+# ======================
+# OS-specific files
+# ======================
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+*~
+
+# ======================
+# Build tools / Temporary
+# ======================
+build/
+dist/
+tmp/
+temp/
+*.log
