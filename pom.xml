@@ -1,13 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>com.mycompany</groupId>
-    <artifactId>uploadws-tester-java</artifactId>
-    <version>1.0</version>
-    <packaging>jar</packaging>
+	<!-- Properties -->
+	<name>uploadws-tester-java</name>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.mycompany</groupId>
+	<artifactId>uploadws-tester-java</artifactId>
+	<version>1.0</version>
+	<packaging>jar</packaging>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>11</maven.compiler.source>
+		<maven.compiler.target>11</maven.compiler.target>
+	</properties>
+	<!-- Build -->
 	<build>
-
+		<sourceDirectory>src/main/java</sourceDirectory>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.axis2</groupId>
+				<artifactId>axis2-wsdl2code-maven-plugin</artifactId>
+				<version>1.7.9</version>
+				<executions>
+					<execution>
+						<id>generate-axis2-client</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>wsdl2code</goal>
+						</goals>
+						<configuration>
+							<wsdlFile>${basedir}/src/main/resources/wsdl/Service.wsdl</wsdlFile>
+							<packageName>opticat.client</packageName>
+							<outputDirectory>${project.build.directory}/generated-sources/axis2</outputDirectory>
+							<databindingName>adb</databindingName>
+							<generateServerSide>false</generateServerSide>
+							<generateTestcase>false</generateTestcase>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>3.2.0</version>
+				<executions>
+					<execution>
+						<id>add-source</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>${project.build.directory}/generated-sources/axis2</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>axistools-maven-plugin</artifactId>
@@ -15,17 +64,16 @@
 				<configuration>
 					<urls>
 						<!--<url>http://opticat1.net/OBWS/Service.svc?wsdl</url>-->
-                                                <url>http://opticatnetwork.com/OBAPI_1_2/Service.svc?wsdl</url>
+            <url>http://opticatnetwork.com/OBAPI_1_2/Service.svc?wsdl</url>
 					</urls>
 					<packageSpace>com.company.wsdl</packageSpace>
 					<testCases>true</testCases>
 					<serverSide>true</serverSide>
 					<subPackageByFileName>true</subPackageByFileName>
-
 					<useEmitter>true</useEmitter>
-                                            <namespaceToPackage>https://opticatnetwork.com/OBAPI_1_2/Service.svc=com.mywebservice</namespaceToPackage>
+          <namespaceToPackage>https://opticatnetwork.com/OBAPI_1_2/Service.svc=com.mywebservice</namespaceToPackage>
 					<!--<namespaceToPackage>https://opticat1.net/OBWS/Service.svc=com.mywebservice</namespaceToPackage> 
-                                         <namespaceToPackage>https://87306-oc1beta.oc1beta.internal/OBWS/Service.svc=com.mywebservice</namespaceToPackage> -->
+              <namespaceToPackage>https://87306-oc1beta.oc1beta.internal/OBWS/Service.svc=com.mywebservice</namespaceToPackage> -->
 				</configuration>
 				<executions>
 					<execution>
@@ -35,35 +83,31 @@
 					</execution>
 				</executions>
 			</plugin>
-		 <plugin>
-                  
-                  <artifactId>maven-assembly-plugin</artifactId>
-		  <version>3.1.1</version>
-		  <configuration>
-                      <descriptorRefs>
-                          <descriptorRef>jar-with-dependencies</descriptorRef>
-                      </descriptorRefs>
-                   <archive>
-                       <manifest>
-                           <addClasspath>true</addClasspath>
-                           <mainClass>com.mycompany.demowsdos.mainForm</mainClass>
-                       </manifest>
-                   </archive>
-		  </configuration>
-                  <executions>
-                      <execution>
-                          <id>make-assembly</id>
-                          <phase>package</phase>
-                          <goals>
-                              <goal>single</goal>
-                          </goals>                       
-                      </execution>
-                  </executions>
-		 </plugin>
-		
-                </plugins>
-
-
+		  <plugin>
+   			<artifactId>maven-assembly-plugin</artifactId>
+				<version>3.1.1</version>
+				<configuration>
+					<descriptorRefs>
+							<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+					<archive>
+							<manifest>
+									<addClasspath>true</addClasspath>
+									<mainClass>com.mycompany.demowsdos.mainForm</mainClass>
+							</manifest>
+					</archive>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>package</phase>
+						<goals>
+								<goal>single</goal>
+						</goals>                       
+					</execution>
+				</executions>
+		 	</plugin>
+    </plugins>
 		<pluginManagement>
 			<plugins>
 				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
@@ -100,9 +144,28 @@
 			</plugins>
 		</pluginManagement>
 	</build>
-
-	<!-- Here the libraries that you need to call the Axis WS client -->
+	<!-- Dependencies -->
 	<dependencies>
+		<dependency>
+			<groupId>org.apache.axis2</groupId>
+			<artifactId>axis2-kernel</artifactId>
+			<version>1.7.9</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.axis2</groupId>
+			<artifactId>axis2-adb</artifactId>
+			<version>1.7.9</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.axis2</groupId>
+			<artifactId>axis2-transport-http</artifactId>
+			<version>1.7.9</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>1.7.36</version>
+		</dependency>
 		<dependency>
 			<groupId>org.apache.axis</groupId>
 			<artifactId>axis</artifactId>
@@ -150,16 +213,10 @@
 			<artifactId>junit</artifactId>
 			<version>4.13.2</version>
 		</dependency>
-	 <dependency>
-	  <groupId>org.netbeans.external</groupId>
-	  <artifactId>AbsoluteLayout</artifactId>
-	  <version>RELEASE120</version>
-	 </dependency>
+		<dependency>
+			<groupId>org.netbeans.external</groupId>
+			<artifactId>AbsoluteLayout</artifactId>
+			<version>RELEASE120</version>
+		</dependency>
 	</dependencies>
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-    </properties>
-    <name>uploadws-tester-java</name>
 </project>
