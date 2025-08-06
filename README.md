@@ -31,3 +31,8 @@ The example shown above is for switching to the production server
 Dependencies:
 
 ![javaDependencies](https://user-images.githubusercontent.com/88451423/133518263-a09a4a33-bf13-4a5d-bdf2-6feae8d56608.png)
+
+# Important Notes to Consider
+We are eventually making a new API which will make this current endpoints deprecated.
+It will support document/literal binding which will solve java security issues.
+It will also support hashes of uploaded files larger than 1 gb.
