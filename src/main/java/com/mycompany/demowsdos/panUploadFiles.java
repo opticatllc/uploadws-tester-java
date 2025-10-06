@@ -52,6 +52,8 @@ public class panUploadFiles extends javax.swing.JPanel {
     List<ProductLine> lstProducts = new ArrayList<>();
     boolean lastChunk = false;
     long lpos = 0;
+    private String fileChecksum = "";
+    private static final int DEFAULT_CHUNK_SIZE = 4194304;
     //String[] strProLines = new String[100];
     //String[] strProFiles = new String[100];
     
@@ -217,7 +219,7 @@ public class panUploadFiles extends javax.swing.JPanel {
         add(btnSave, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 280, -1, -1));
 
         jLabel3.setForeground(new java.awt.Color(228, 239, 22));
-        jLabel3.setText("Checksum algo:");
+        jLabel3.setText("Checksum Algo:");
         add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 340, 90, -1));
 
         txtCheAlg.setBackground(new java.awt.Color(102, 102, 102));
@@ -254,15 +256,19 @@ public class panUploadFiles extends javax.swing.JPanel {
     private void btnChoFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChoFileActionPerformed
         JFileChooser choFiler = new JFileChooser();
         int selection=choFiler.showOpenDialog(this);
+        this.txtResp.setText("");
         if(selection==choFiler.APPROVE_OPTION){
             try {
                 selectFile= choFiler.getSelectedFile();
                 this.txtFile.setText(selectFile.getAbsolutePath());
                 MessageDigest md = MessageDigest.getInstance("SHA-256");
                 try {
-                    if(selectFile.length() < 1073741823){
-                        String hex = checksum(selectFile.getAbsolutePath().toString(), md);
-                    }
+                    
+                    String hex = checksumLargeFile(selectFile.getAbsolutePath().toString(), md);
+                    this.txtResp.setText(this.txtResp.getText() + "File Size: " + (selectFile.length() / (1024 * 1024)) + " Mb\n\n");
+                    this.txtResp.setText(this.txtResp.getText() + "Calculated Checksum Hex Value: \n" + hex.toString() + " \n\n");
+                    this.txtResp.setText(this.txtResp.getText() + "Please, copy and paste this value into the Checksum Hex field\nand fill Checksum Algo with a valid value [Current supported values: sha256, sha512]. \n\n");
+           
                 } catch (IOException ex) {
                     Logger.getLogger(panUploadFiles.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -306,9 +312,8 @@ public class panUploadFiles extends javax.swing.JPanel {
         cmbProduct.removeAllItems();
         cmbProduct.addItem("-- Select product file --");
         int intCount =0;
-        for(ProductLine prod: lstProducts){        
-            if (prod.getstrLine()==cmbLines.getSelectedItem())
-            {
+        for(ProductLine prod: lstProducts) {        
+            if (prod.getstrLine()==cmbLines.getSelectedItem()) {
                 cmbProduct.addItem(prod.getstrFile());
                 if (intCount==0)
                     cmbFilTyp.setSelectedItem(prod.getstrFileTyp());
@@ -318,8 +323,7 @@ public class panUploadFiles extends javax.swing.JPanel {
     }//GEN-LAST:event_cmbLinesActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        if (selectFile.isFile())
-        {
+        if (selectFile.isFile()) {
             this.txtResp.setText(this.txtResp.getText() + "Uploading file (UploadFileChunk), please wait ... \n" );
             //size for 4MB  
             int bufferSize = 4194304;
@@ -329,14 +333,30 @@ public class panUploadFiles extends javax.swing.JPanel {
             //set position after read
             long intPos =0;
             lastChunk =  false;
-            try
-            {        
+            try {  
+                try (FileInputStream fis = new FileInputStream(selectFile)) {
+                    MessageDigest digest = MessageDigest.getInstance("SHA-256");
+                    byte[] buffer = new byte[8192];
+                    int bytesRead;
+                    while ((bytesRead = fis.read(buffer)) != -1) {
+                        digest.update(buffer, 0, bytesRead);
+                    }
+                    byte[] hashBytes = digest.digest();
+                    StringBuilder sb = new StringBuilder();
+                    for (byte b : hashBytes) {
+                        sb.append(String.format("%02X", b));
+                    }
+                    fileChecksum = sb.toString();
+                } catch (Exception e) {
+                    Logger.getLogger(panUploadFiles.class.getName()).log(Level.SEVERE, null, e);
+                    this.txtResp.setText(this.txtResp.getText() + "Error calculating checksum: " + e.getMessage() + "\n");
+                    this.fileChecksum = "";
+                }
+
                 InputStream fr = new BufferedInputStream(new FileInputStream(selectFile));
-                //get file size  
-                //long intLen = fr.available();
                 long intLen = selectFile.length();
                 while (intCurrPos<intLen) {
-                    if (intLen<=bufferSize){
+                    if (intLen<=bufferSize) {
                         bufferSize = (int)intLen;
                         byteArray = new byte[bufferSize];
                         lastChunk =  true;
@@ -344,10 +364,11 @@ public class panUploadFiles extends javax.swing.JPanel {
                     
                     //int intInp = fr.read();
                     intPos = fr.read(byteArray, 0, byteArray.length);
-                    if (intPos<0)
+                    if (intPos < 0)
                         break;
                                        
-                    uploadFile(byteArray, intCurrPos);       
+                    uploadFile(byteArray, intCurrPos);
+
                     long newLen = intLen - (intPos + intCurrPos);
                     lpos = newLen;
                     if (newLen < bufferSize){
@@ -365,20 +386,20 @@ public class panUploadFiles extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnSaveActionPerformed
 
-private void connectToService (int intServ) throws IOException{
-    try {
+    private void connectToService (int intServ) throws IOException{
         try {
-            //URL url = new URL("https://opticat1.net/OBWS/Service.svc");
-            URL url = new URL("https://opticatnetwork.com/OBAPI_1_2/Service.svc");
+            try {
+                //URL url = new URL("https://opticat1.net/OBWS/Service.svc");
+                URL url = new URL("https://opticatnetwork.com/OBAPI_1_2/Service.svc");
 
-            //System.getProperties().put("socksProxyHost", "127.0.0.1");
-            //System.getProperties().put("socksProxyPort", "80");
-            
-            ServiceLocator sl = new ServiceLocator();
-            sl.getBasicHttpBinding_IService(url);
-            
-            BasicHttpBinding_IServiceStub stub = (BasicHttpBinding_IServiceStub) sl.getBasicHttpBinding_IService(url);
-            
+                //System.getProperties().put("socksProxyHost", "127.0.0.1");
+                //System.getProperties().put("socksProxyPort", "80");
+                
+                ServiceLocator sl = new ServiceLocator();
+                sl.getBasicHttpBinding_IService(url);
+                
+                BasicHttpBinding_IServiceStub stub = (BasicHttpBinding_IServiceStub) sl.getBasicHttpBinding_IService(url);
+                
                switch (intServ)
                {
                    case 1:
@@ -443,10 +464,7 @@ private void connectToService (int intServ) throws IOException{
                         }
                         break;
                    case 2:
-                        //JOptionPane.showMessageDialog(this, this.cmbFilTyp.getSelectedItem().toString() + " ," + selectFile.getAbsoluteFile().toString());                  
-                       // JOptionPane.showMessageDialog(this, selectFile.getAbsoluteFile().toString() + " ," + selectFile.getName().toString());
-                       if (! this.txtFile.getText().isEmpty()) 
-                       {
+                        if (! this.txtFile.getText().isEmpty()) {
                         Saveuploadresponse responseUp;
                         try {
                             Saveuploadrequest params = new  Saveuploadrequest();
@@ -517,77 +535,81 @@ private void connectToService (int intServ) throws IOException{
         }catch (ServiceException  ex){
             this.txtResp.setText(this.txtResp.getText() + "Service error: " + ex.getMessage() + "\n");
         }
-}
+    }
  
-private void uploadFile (byte[]  byteArray, long intPos)
-{
-    try{   
-        try{
-            ServiceLocator sl = new ServiceLocator();
-            //URL url = new URL("https://opticat1.net/OBWS/Service.svc");
-            URL url = new URL("https://opticatnetwork.com/OBAPI_1_2/Service.svc");
-            
-           // System.getProperties().put("socksProxyHost", "127.0.0.1");
-           // System.getProperties().put("socksProxyPort", "80");
+    private void uploadFile (byte[]  byteArray, long chunkOffset) {
+        try {   
+            try {
+                ServiceLocator sl = new ServiceLocator();
+                URL url = new URL("https://opticatnetwork.com/OBAPI_1_2/Service.svc");
+                
+                sl.getBasicHttpBinding_IService(url);
+                BasicHttpBinding_IServiceStub stub = (BasicHttpBinding_IServiceStub) sl.getBasicHttpBinding_IService(url);
 
-            sl.getBasicHttpBinding_IService(url);
-            BasicHttpBinding_IServiceStub stub = (BasicHttpBinding_IServiceStub) sl.getBasicHttpBinding_IService(url);
-            if (! this.txtFile.getText().isEmpty()) 
-            {
-                try {
-                    String strResp = stub.uploadFileChunk(this.txtApiKey.getText(), selectFile.getName().toString(),  byteArray, intPos);
-                    if (strResp.indexOf("Error") <0){
-                        if(lastChunk){
+                if (!this.txtFile.getText().isEmpty()) {
+                    try {
+                        String strResp = stub.uploadFileChunk(this.txtApiKey.getText(), selectFile.getName().toString(),  byteArray, chunkOffset);
+                        
+                        // Log Progress
+                        long uploadedBytes = chunkOffset + byteArray.length;
+                        long totalBytes = selectFile.length();
+                        
+                        boolean lastChunk = uploadedBytes >= totalBytes;
+                        if (strResp.indexOf("Error") < 0 && lastChunk) {
                             try {
                                 connectToService(UPLOADCHUNKS);
+                                this.txtResp.setText(String.format(
+                                    "File %s was uploaded successfully.", 
+                                    selectFile.getName()
+                                ));
                             } catch (IOException ex) {
                                 Logger.getLogger(panUploadFiles.class.getName()).log(Level.SEVERE, null, ex);
+                                this.txtResp.setText(String.format(
+                                    "Upload finished but post-processing failed" + 
+                                    ex.getMessage()
+                                ));
                             }
-                            this.txtResp.setText(this.txtResp.getText() + "UploadFile: File " + selectFile.getName().toString() + " was uploaded. \n");
+                        }
+                    }
+                    catch (RemoteException ex) {
+                        if(ex.getMessage().indexOf("java.net.ConnectException: Connection timed out: connect")!=-1) {
+                            uploadFile(byteArray, chunkOffset);
+                        }
+                        else{
+                            Logger.getLogger(mainForm.class.getName()).log(Level.SEVERE, null, ex);
+                            this.txtResp.setText("Upload failed for file: " + selectFile.getName() + ex.getMessage());
                         }
                     }
                 }
-                catch (RemoteException ex) {
-                     if(ex.getMessage().indexOf("java.net.ConnectException: Connection timed out: connect")!=-1)
-                    {
-                       uploadFile (byteArray, intPos);
-                    }
-                    else{
-                        Logger.getLogger(mainForm.class.getName()).log(Level.SEVERE, null, ex);
-                        this.txtResp.setText("Service error: " + ex.getMessage());
-                    }
-                }
             }
-        }
             catch (MalformedURLException ex) {
                 Logger.getLogger(mainForm.class.getName()).log(Level.SEVERE, null, ex);
                 this.txtResp.setText("Service error: " + ex.getMessage());
             }
         }catch (ServiceException  ex){
             this.txtResp.setText("Service error: " + ex.getMessage());
+        }
     }
-}
 
-private  String checksum(final String filepath, MessageDigest md) throws IOException {
-        this.txtResp.setText("Getting Check sum hex \n");
-      // file hashing with DigestInputStream
-      try (DigestInputStream dis = new DigestInputStream(new FileInputStream(filepath), md)) {
-          //while (dis.read() != -1)
-			// {
-				; //empty loop to clear the data
-			//}
-          md = dis.getMessageDigest();
-      }
-      // bytes to hex
-      final StringBuilder result = new StringBuilder();
-      for (final byte b : md.digest()) {
-          result.append(String.format("%02x", b));
-      }
-      //this.txtResp.setText(this.txtResp.getText() + "Getting checksum hex \n");
-      this.txtResp.setText(this.txtResp.getText() + "Hex value: " + result.toString() + " \n");
-      this.txtResp.setText(this.txtResp.getText() + "Please, copy and paste it into the checksum hex field, if you want to use the checksum algorithm \n");
-      return result.toString();
-  }
+    private String checksumLargeFile(final String filepath, MessageDigest md) throws IOException {
+        this.txtResp.setText("Getting Checksum Hex... \n\n");
+        // file hashing with InputStream
+        try (InputStream is = new FileInputStream(filepath)) {
+            byte[] buffer = new byte[1024 * 1024]; // 1 MB per chunk
+            int bytesRead;
+            while ((bytesRead = is.read(buffer)) != -1) {
+                md.update(buffer, 0, bytesRead); // Adding up chunks to digest
+            }
+        }
+
+        // bytes to hex
+        StringBuilder result = new StringBuilder();
+        for (byte b : md.digest()) {
+            result.append(String.format("%02x", b));
+        }
+
+        return result.toString();
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnChoFile;
