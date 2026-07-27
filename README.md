@@ -1,3 +1,5 @@
+** superseded by OB API 2 https://github.com/obapi2/ **
+
 # uploadws-tester-java
 Desktop application
 
